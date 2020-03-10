@@ -1,0 +1,18 @@
+xóa và tái tạo pagination
+trả về ngày tháng
+phân loại url cho pagination
+thêm nhãn khi thêm mới
+Đưa về page 1 và sắp xếp sau khi thêm mới
+Cấu hình upload: @Bean(name = "multipartResolver") và Utf-8 encoding bằng filter
+upload sản phẩm:
+	+ lưu thông tin sản phẩm vào db
+	+ lưu hình vào thư mục
+Edit sản phẩm : 
+	+ giống upload nhưng thêm phần xóa sản phẩm nếu chọn
+	+ thay đổi giao diện giữ add và edit khi dùng chung modal
+Xóa sản phẩm
+
+Tạo menu động bằng interceptor và jstl 
+
+Hiển thị trang chi tiết sản phẩm
+Đổi sang mysql: chú ý phần column defined 
