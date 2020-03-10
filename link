@@ -1,0 +1,20 @@
+web.xml is missing and <failOnMissingWebXml> is set to true:
+https://stackoverflow.com/questions/31835033/web-xml-is-missing-and-failonmissingwebxml-is-set-to-true
+
+reset pagination
+https://stackoverflow.com/questions/24961833/reset-total-pages-in-jquery-pagination-plugin
+
+vaildate
+https://howtodoinjava.com/spring-boot2/spring-rest-request-validation/
+
+exception hander
+https://www.logicbig.com/tutorials/spring-framework/spring-web-mvc/exception-handler-annotation.html
+
+build framework
+https://www.javaworld.com/article/2076541/building-a-java-servlet-framework-using-reflection--part-1.html
+https://dzone.com/articles/method-to-get-jdbc-result-set-into-given-generic-c
+
+https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177
+
+// sai lam jpa
+https://medium.com/vnextlife/spring-data-jpa-hibernate-nh%E1%BB%AFng-sai-l%E1%BA%A7m-r%E1%BA%A5t-d%E1%BB%85-g%E1%BA%B7p-ph%E1%BA%A3i-caef72b18879
