@@ -14,12 +14,13 @@ public class BillConverter {
 	private ModelMapper modelMapper;
 
 	public BillDTO toDTO(BillEntity entity) {
+		BillDTO dto = modelMapper.map(entity, BillDTO.class);
+
 		// Tránh lồng chuỗi json vì get lại bill
-		entity.getBilProducts().forEach(ele -> {
+		dto.getBilProducts().forEach(ele -> {
 			ele.setPbBill(null);
 		});
 
-		BillDTO dto = modelMapper.map(entity, BillDTO.class);
 		return dto;
 	}
 

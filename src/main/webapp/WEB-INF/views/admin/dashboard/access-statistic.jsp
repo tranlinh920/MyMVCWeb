@@ -1,4 +1,7 @@
-<%@ include file="/WEB-INF/views/taglib.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.my.contant.DateContant"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,10 +45,57 @@
 					<!-- Page Heading -->
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+						<h2 class="h3 mb-0 text-gray-800">Thống kê lượt truy cập</h2>
 						<a href="#"
 							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 							class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+
+					</div>
+
+					<div class="mb-2">
+						<div class="float-left">
+							Ngày: <select id="date" onchange="getAccessStatistic()">
+								<c:forEach var="date" items="${DateContant.DATE}">
+									<c:choose>
+										<c:when test="${date == currentDate}">
+											<option selected value="volvo">${date}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="volvo">${date}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="float-left">
+							Tháng: <select id="month" onchange="getAccessStatistic()">
+								<c:forEach var="month" items="${DateContant.MONTH}">
+									<c:choose>
+										<c:when test="${month == currentMonth}">
+											<option selected value="volvo">${month+1}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="volvo">${month+1}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="float-left">
+							Năm: <select id="year" onchange="getAccessStatistic()">
+								<c:forEach var="year" items="${DateContant.YEAR}">
+									<c:choose>
+										<c:when test="${year == currentYear}">
+											<option selected value="volvo">${year}</option>
+										</c:when>
+										<c:otherwise>
+											<option value="volvo">${year}</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="clearfix"></div>
 					</div>
 
 					<!-- Content Row -->
@@ -57,13 +107,11 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div
-												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings
-												(Monthly)</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-										</div>
-										<div class="col-auto">
-											<i class="fas fa-calendar fa-2x text-gray-300"></i>
+											<div id="dateAccessLabel"
+												class="text-xs font-weight-bold text-primary text-uppercase mb-1">Lượt
+												truy cập trong ngày ${currentDate}:</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"
+												id="dateAccesses">0</div>
 										</div>
 									</div>
 								</div>
@@ -76,13 +124,11 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div
-												class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings
-												(Annual)</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-										</div>
-										<div class="col-auto">
-											<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+											<div id="weekAccessLabel"
+												class="text-xs font-weight-bold text-success text-uppercase mb-1">Lượt
+												truy cập trong tuần</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"
+												id="weekAccesses">0</div>
 										</div>
 									</div>
 								</div>
@@ -95,23 +141,15 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div
-												class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+											<div id="monthAccessLabel"
+												class="text-xs font-weight-bold text-info text-uppercase mb-1">Lượt
+												truy cập trong tháng ${currentMonth +1}:</div>
 											<div class="row no-gutters align-items-center">
 												<div class="col-auto">
-													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-												</div>
-												<div class="col">
-													<div class="progress progress-sm mr-2">
-														<div class="progress-bar bg-info" role="progressbar"
-															style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-															aria-valuemax="100"></div>
-													</div>
+													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
+														id="monthAccesses">0</div>
 												</div>
 											</div>
-										</div>
-										<div class="col-auto">
-											<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
 										</div>
 									</div>
 								</div>
@@ -124,13 +162,11 @@
 								<div class="card-body">
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
-											<div
-												class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending
-												Requests</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-										</div>
-										<div class="col-auto">
-											<i class="fas fa-comments fa-2x text-gray-300"></i>
+											<div id="#yearAccessLabel"
+												class="text-xs font-weight-bold text-warning text-uppercase mb-1">Lượt
+												truy cập trong năm ${currentYear}:</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800"
+												id="yearAccesses">0</div>
 										</div>
 									</div>
 								</div>
@@ -148,8 +184,22 @@
 								<!-- Card Header - Dropdown -->
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Earnings
-										Overview</h6>
+									<h6 class="m-0 font-weight-bold text-primary">
+										Lượt truy cập theo tháng trong năm: <span><select
+											id="yearOfMonthChart" onchange="drawMonthAccessChart()">
+												<c:forEach var="year" items="${DateContant.YEAR}">
+													<c:choose>
+														<c:when test="${year == currentYear}">
+															<option selected value="volvo">${year}</option>
+														</c:when>
+														<c:otherwise>
+															<option value="volvo">${year}</option>
+														</c:otherwise>
+													</c:choose>
+												</c:forEach>
+										</select></span>
+									</h6>
+
 									<div class="dropdown no-arrow">
 										<a class="dropdown-toggle" href="#" role="button"
 											id="dropdownMenuLink" data-toggle="dropdown"
@@ -169,9 +219,7 @@
 								</div>
 								<!-- Card Body -->
 								<div class="card-body">
-									<div class="chart-area">
-										<canvas id="myAreaChart"></canvas>
-									</div>
+									<div id="monthAccessChart" style="height: 320px; width: 100%;"></div>
 								</div>
 							</div>
 						</div>
@@ -219,6 +267,55 @@
 							</div>
 						</div>
 					</div>
+
+
+					<!-- DataTales Example -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<div class="row">
+								<div class="col-12 col-md-8">
+									<h6 class="m-0 font-weight-bold text-primary">Danh sách
+										hóa đơn</h6>
+								</div>
+								<div class="col col-md-4">
+									<!-- 									Button trigger modal -->
+									<!-- 									<button type="button" class="btn btn-success float-right" -->
+									<!-- 										onClick="openProductAdding()" data-target="#addModal">Thêm</button> -->
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<div
+								class="table-responsive my-table-wrapper-scroll-y my-custom-scrollbar">
+								<table class="table table-bordered" id="dataTable" width="100%"
+									cellspacing="0">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Ngày</th>
+											<th>Lượt truy cập</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th>ID</th>
+											<th>Ngày</th>
+											<th>Lượt truy cập</th>
+										</tr>
+									</tfoot>
+									<tbody id="AccessTableBody">
+										<!-- render at here -->
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="card-footer py-3">
+							<ul id="pagination-demo"
+								class="pagination pagination-sm  float-right"></ul>
+						</div>
+					</div>
+
+
 
 					<!-- Content Row -->
 					<div class="row">
@@ -398,6 +495,105 @@
 
 	<!-- Footer declare -->
 	<%@ include file="/WEB-INF/views/admin/common/_footer-declare.jsp"%>
+
+	<script
+		src="${pageContext.request.contextPath}/resources/plugin/canvasjs/canvasjs.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/plugin/canvasjs/jquery.canvasjs.min.js"></script>
+
+	<script>
+	
+		let baseUrl = 'http://localhost:8080/';		
+
+		getAccessStatistic();
+		drawMonthAccessChart();
+		//------------------------------------------------------
+		
+		function getAccessStatistic(){
+			let date = $( '#date option:selected' ).text();
+			let month = $( '#month option:selected' ).text();
+			let year = $( '#year option:selected' ).text();
+			
+			$.ajax({
+				 url: baseUrl + 'access-statistics?get_by=customize&day='+date+'&month='+month+'&year='+year,
+				 async: false,
+				 success: (res)=>{
+					 if(res.data[0] != null){
+						 
+						 $('#dateAccessLabel').html('lượt truy cập trong ngày: ' + date);
+						 $('#dateAccesses').html(res.data[0].dateAccesses);
+						 
+						 $('#weekAccessLabel').html('lượt truy cập trong tuần: ');
+						 $('#weekAccesses').html(res.data[0].weekAccesses);
+						 
+						 $('#monthAccessLabel').html('lượt truy cập trong tháng: ' + month);
+						 $('#monthAccesses').html(res.data[0].monthAccesses);
+						 
+						 $('#yearAccessLabel').html('lượt truy cập trong năm: ' + year);
+						 $('#yearAccesses').html(res.data[0].yearAccesses);
+						 
+					 }else{
+						alert('Không có dữ liệu cho thời gian này'); 
+					 }
+			    }});		
+		}
+		
+		// tạo biểu đồ từ dữ liệu thu được
+		function drawMonthAccessChart(){
+			
+			console.log(getMonthAccessData());
+			
+			var options = {
+					animationEnabled: true,  
+					title:{
+//						text: "Lượt truy cập theo tháng"
+					},
+					axisX: {
+	 					valueFormatString: "##",
+						prefix: "Tháng ",
+						minimum: 1,
+						maximum: 12,
+					},
+					axisY: {
+						includeZero: true
+					},
+					data: [{
+					    xValueFormatString:"Tháng ##",
+				        yValueFormatString:"#### lượt",
+						type: "spline",
+						dataPoints: getMonthAccessData(),
+					}]
+				};
+				$("#monthAccessChart").CanvasJSChart(options);
+		}
+		
+		// Khởi tạo dữ liệu cho biều đồ lượt xem của tất cả tháng trong năm
+		function getMonthAccessData() {
+			let monthsData = [];
+			let year = $( '#yearOfMonthChart option:selected' ).text();	
+			$.ajax({
+				 url: baseUrl + 'access-statistics?get_by=all-month&year='+year,
+				 async: false,
+				 success: (res)=>{
+					 if(res.data[0] != null){
+						 // reset mảng
+						 monthsData.splice(0,monthsData.length)
+						 // thêm dữ liệu vào màng
+						 res.data[0].allMonthAccesses.forEach((views,monthIndex)=>{
+							 monthsData.push({
+								 x: monthIndex + 1, y: views 
+							 });
+						 });		
+						
+					 }else{
+						alert('Không thể khởi tạo biểu đồ tháng !'); 
+					 }
+			    }});
+			 return monthsData;
+		}
+		
+		
+	</script>
 
 </body>
 

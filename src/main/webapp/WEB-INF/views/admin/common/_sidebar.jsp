@@ -37,7 +37,8 @@
 	<!-- Nav Item - Pages Collapse Menu -->
 	<li class="nav-item"><a class="nav-link collapsed" href="#"
 		data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
-		aria-controls="collapseTwo"> <i class="fas fa-fw fa-user"></i> <span>Quản lý người dùng</span>
+		aria-controls="collapseTwo"> <i class="fas fa-fw fa-user"></i> <span>Quản
+				lý người dùng</span>
 	</a>
 		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
 			data-parent="#accordionSidebar">
@@ -49,17 +50,34 @@
 
 	<!-- Nav Item - Utilities Collapse Menu -->
 	<li class="nav-item"><a class="nav-link collapsed" href="#"
-		data-toggle="collapse" data-target="#collapseUtilities"
-		aria-expanded="true" aria-controls="collapseUtilities"> <i
+		data-toggle="collapse" data-target="#collapseProducts"
+		aria-expanded="true" aria-controls="collapseProducts"> <i
 			class="fas fa-fw fa-archive"></i> <span>Quản lý sản phẩm</span>
 	</a>
-		<div id="collapseUtilities" class="collapse"
+		<div id="collapseProducts" class="collapse"
 			aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="${pageContext.request.contextPath}/admin/quan-ly-san-pham">Sản phẩm</a> <a
-					class="collapse-item" href="utilities-border.html">Loại sản phẩm</a> <a
-					class="collapse-item" href="utilities-animation.html">Sản phẩm liên quan</a>
-				<a class="collapse-item" href="utilities-other.html">Sản phẩm bổ sung</a>
+				<a class="collapse-item"
+					href="${pageContext.request.contextPath}/admin/quan-ly-san-pham">Sản
+					phẩm</a> <a class="collapse-item" href="utilities-border.html">Loại
+					sản phẩm</a> <a class="collapse-item" href="utilities-animation.html">Sản
+					phẩm liên quan</a> <a class="collapse-item" href="utilities-other.html">Sản
+					phẩm bổ sung</a>
+			</div>
+		</div></li>
+
+	<!-- Nav Item - Utilities Collapse Menu -->
+	<li class="nav-item"><a class="nav-link collapsed" href="#"
+		data-toggle="collapse" data-target="#collapseBill"
+		aria-expanded="true" aria-controls="collapseBill"> <i
+			class="fas fa-fw fa-file-text"></i> <span>Quản lý hóa đơn</span>
+	</a>
+		<div id="collapseBill" class="collapse"
+			aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item"
+					href="${pageContext.request.contextPath}/admin/quan-ly-hoa-don">Hóa
+					đơn</a>
 			</div>
 		</div></li>
 

@@ -16,6 +16,12 @@ public class ProductConverter {
 
 	public ProductDTO toDTO(ProductEntity entity) {
 		ProductDTO dto = modelMapper.map(entity, ProductDTO.class);
+
+		// Tránh lồng chuỗi json vì get lại product
+//		dto.getProBills().forEach(pb -> {
+//			pb.setPbProduct(null);
+//			pb.setPbBill(null);
+//		});
 		return dto;
 	}
 

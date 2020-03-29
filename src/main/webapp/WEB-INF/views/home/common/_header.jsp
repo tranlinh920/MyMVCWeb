@@ -7,7 +7,7 @@
 		<div class="header">
 			<div class="head-t">
 				<div class="logo">
-					<a href="index.html"><img
+					<a href="http://localhost:8080/trang-chu"><img
 						src="${pageContext.request.contextPath}/resources/home/img/logo.png"
 						class="img-responsive" alt="" /> </a>
 				</div>
@@ -56,9 +56,9 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="search">
-						<form>
-							<input type="text" value="" placeholder="Tìm kiếm..."> <input
-								type="submit" value="">
+						<form action="http://localhost:8080/tim-kiem" method="get">
+							<input type="text" name="p" value="" placeholder="Tìm kiếm...">
+							<input type="submit" value="">
 						</form>
 					</div>
 					<div class="clearfix"></div>
@@ -96,7 +96,7 @@
 						<c:choose>
 							<c:when test="${navCat.catName=='Trang chủ'}">
 								<li class="active grid"><a class="color1"
-									href="${navCat.catLink}">Trang chủ</a></li>
+									href="http://localhost:8080/trang-chu">Trang chủ</a></li>
 							</c:when>
 							<c:when test="${not empty navCat.catCategories}">
 								<li class="grid"><a href="#" class="color1">${navCat.catName}</a>

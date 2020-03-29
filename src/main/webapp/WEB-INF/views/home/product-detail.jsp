@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,92 +80,51 @@
 							<h3>${product.proName}</h3>
 							<span class="brand">Loại: <a
 								href="http://localhost:8080/san-pham/${product.proType.proTypeCode}">${product.proType.proTypeName }
-							</a></span>
+							</a><input type="hidden" id="productTypeCode"
+								value="${productType.proTypeCode}"></span>
+							<c:if test="${not empty product.proBrand}">
+								<br>
+								<span class="brand">Thương hiệu: <a
+									href="http://localhost:8080/san-pham/${product.proBrand.proBrandName}">${product.proBrand.proBrandName }
+								</a></span>
+							</c:if>
 							<br>
-							<div class="price">
-								<span class="text">Giá:</span> <span class="price-new">${product.proPrice}</span><span
-									class="price-old">$100.00</span>
-							</div>
-							<div class="det_nav1">
-								<h4>Select a size :</h4>
-								<div class=" sky-form col col-4">
-									<ul>
-										<li><label class="checkbox"><input
-												type="checkbox" name="checkbox"><i></i>L</label></li>
-										<li><label class="checkbox"><input
-												type="checkbox" name="checkbox"><i></i>S</label></li>
-										<li><label class="checkbox"><input
-												type="checkbox" name="checkbox"><i></i>M</label></li>
-										<li><label class="checkbox"><input
-												type="checkbox" name="checkbox"><i></i>XL</label></li>
-									</ul>
+							<c:if test="${!product.proIsDiscount}">
+								<div class="price">
+									<span class="text">Giá:</span> <span class="price-new">
+										<fmt:formatNumber value="${product.proPrice}" type="currency" />
+									</span>
 								</div>
-							</div>
+							</c:if>
+							<c:if test="${product.proIsDiscount}">
+								<div class="price">
+									<span class="text">Giá:</span> <span class="price-new">
+										<fmt:formatNumber
+											value="${product.proPrice - product.proPrice*product.proDiscountRatio/100}"
+											type="currency" />
+									</span><span class="price-old"> <fmt:formatNumber
+											value="${product.proPrice}" type="currency" />
+									</span>
+								</div>
+							</c:if>
 							<div class="btn_form">
-								<a href="checkout.html">Mua ngay</a> <a href="checkout.html">Thêm
-									vào giỏ</a>
+								<a onclick="buyNow(${product.proId})">Mua ngay</a> <a href="#"
+									onclick="addToCart(${product.proId})">Thêm vào giỏ</a>
 							</div>
-							<a href="#"><span>login to save in wishlist </span></a>
 						</c:if>
 					</div>
 					<div class="clearfix"></div>
 				</div>
 				<c:if test="${not empty product}">
 					<div class="single-bottom1">
-						<h6>Chi tiết sản phẩm</h6>
+						<h6>Mô tả</h6>
 						<p class="prod-desc">${product.proDescribe}</p>
 					</div>
 				</c:if>
 				<div class="single-bottom2">
-					<h6>Related Products</h6>
-					<div class="product">
-						<div class="product-desc">
-							<div class="product-img">
-								<img src="images/w8.jpg" class="img-responsive " alt="" />
-							</div>
-							<div class="prod1-desc">
-								<h5>
-									<a class="product_link" href="#">Excepteur sint</a>
-								</h5>
-								<p class="product_descr">Vivamus ante lorem, eleifend nec
-									interdum non, ullamcorper et arcu. Class aptent taciti sociosqu
-									ad litora torquent per conubia nostra, per inceptos himenaeos.
-								</p>
-							</div>
-							<div class="clearfix"></div>
-						</div>
-						<div class="product_price">
-							<span class="price-access">$597.51</span>
-							<button class="button1">
-								<span>Add to cart</span>
-							</button>
-						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="product">
-						<div class="product-desc">
-							<div class="product-img">
-								<img src="images/w10.jpg" class="img-responsive " alt="" />
-							</div>
-							<div class="prod1-desc">
-								<h5>
-									<a class="product_link" href="#">Excepteur sint</a>
-								</h5>
-								<p class="product_descr">Vivamus ante lorem, eleifend nec
-									interdum non, ullamcorper et arcu. Class aptent taciti sociosqu
-									ad litora torquent per conubia nostra, per inceptos himenaeos.
-								</p>
-							</div>
-							<div class="clearfix"></div>
-						</div>
-						<div class="product_price">
-							<span class="price-access">$597.51</span>
-							<button class="button1">
-								<span>Add to cart</span>
-							</button>
-						</div>
-						<div class="clearfix"></div>
-					</div>
+					<h6>Sản phẩm liên quan</h6>
+					<input type="hidden" id="relatedProducts">
+					<!-- data here -->
 				</div>
 			</div>
 
@@ -230,65 +190,67 @@
 	<%@ include file="/WEB-INF/views/home/common/_footer-declare.jsp"%>
 
 	<script>
-		const firstPage = 1;
-		let startPage;
-		let totalPages = ${paging.totalPages};
-		let visiblePages = ${paging.visiblePages};
-		let currentPage = ${paging.page};// default
-		let limit = 8;
 		let baseUrl = 'http://localhost:8080/';
+		let proTypeCode = $('#productTypeCode').val();
 	
 		apiUrl = {
 			products: {
-				all: baseUrl + 'products?limit='+limit+'&',
+				all: baseUrl + 'products',
 				image: baseUrl + 'resources/images/products/',
+				cart: baseUrl + 'products/add-to-cart/',
+				byProductType: baseUrl +  'products/product-type?product_type_code=' + proTypeCode,
 			}
 		}
 	
-		viewMore(apiUrl.products.all);
+		getRelatedProducts(apiUrl.products.byProductType + '&get_random=true&limit=3');
 		//--------------------------------------------------------------
-		function viewMore(url) {
-			$('#viewMoreBtn').click( () => {
-				currentPage += 1;
-				console.log(url + 'page='+currentPage);
-				$.get( url + 'page='+currentPage,
-						(res, status) => {
-							renderHtml(res.data);
-							// xóa nút xem thêm
-							if(currentPage === totalPages)
-								$('#viewMoreBtn').remove();
-						}
-				);
+		function getRelatedProducts(url) {
+			$.get( url, (res, status) => {
+				renderHtml(res.data);
 			});
 		}
 		
 		function renderHtml(data){
 			let html = "";
 			data.forEach(ele => { 
-				html += '<div class="grid1_of_4">';
-				html += '	<div class="border">';
-				html += '		<div class="content_box"><a href="details.html">';
-				html += '			<img src="'+apiUrl.products.image + ele.proImages[0].proImageName +'" class="img-responsive" alt="loading..." />';
-				html += '			</a>';
+				html += '<div class="product">';
+				html += '		<div class="product-desc">';
+				html += '			<div class="product-img">';
+				html += '				<img src="'+ apiUrl.products.image +ele.proImages[0].proImageName+'" class="img-responsive " alt="loading..." />';
+				html += '			</div>';
+				html += '			<div class="prod1-desc">';
+				html += '				<h5><a class="product_link" href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">'+ele.proName+'</a></h5>';
+				html += '               <p>'+(ele.proPrice/1000).toFixed(3)+ ' đ' + '</p>';
+				html += '			</div>';
+				html += '			<div class="clearfix"></div>';
 				html += '		</div>';
-				html += '		<h5><a href="details.html">'+ele.proName+'</a></h5>';
-				html += '		<div class="item_add"><span class="item_price">';
-				html += '			<p><del>'+ele.proPrice+'</del></p>';
-				html += '		</span></div>';
-				html += '		<div class="item_add"><span class="item_price">';
-				html += '			<h4>'+ele.proPrice+'</h4>';
-				html += '		</span></div>';
-				html += '		<p>Chỉ còn 2 sản phẩm</p>';
-				html += '		<div class="item_add"><span class="item_price"><a href="#">add to cart</a></span></div>';
-				html += '	</div>';
+				html += '		<div class="product_price">';
+				html += '			<button class="button1" onclick="addToCart('+ele.proId+')"><span>Thêm vào giỏ</span></button>';
+				html += '		</div>';
+				html += '		<div class="clearfix"></div>';
 				html += '</div>';
-				
 			});
-			$('#viewMoreLocation').after(html);  
-			// xóa location ban đầu
-			$('#viewMoreLocation').remove();
-			// tạo location mới
-			$('#viewMoreInit').before('<input id="viewMoreLocation" type="hidden"></input>');
+			
+			$('#relatedProducts').after(html);
+		}
+		
+		// Thêm sản phẩm vào giỏ
+		function addToCart(proId){
+			 url = apiUrl.products.cart + proId; 
+			 $.post(url,{},(res, status) => {
+				 $('#simpleCart_quantity').html(res.data);
+				 alert("Thêm thành công");
+			    }
+			 );
+		}
+		
+		// mua ngay
+		function buyNow(proId){
+			url = apiUrl.products.cart + proId; 
+			 $.post(url,{},(res, status) => {
+				 window.location.href = 'http://localhost:8080/gio-hang';
+			    }
+			 );
 		}
 	</script>
 </body>

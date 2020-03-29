@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,8 @@
 				<div class="women">
 					<c:if test="${not empty productType}">
 						<a href="#">
-							<h4>${productType.proTypeName}</h4>
+							<h4>${productType.proTypeName}</h4> <input type="hidden"
+							id="productTypeCode" value="${productType.proTypeCode}">
 						</a>
 					</c:if>
 					<ul class="w_nav">
@@ -62,24 +64,33 @@
 								</c:if>
 								<c:if test="${product.proIsDiscount}">
 									<div class="item_add">
-										<span class="item_price">
-											<p>
-												<del>${product.proPrice}&#32;đ</del>
-											</p>
-										</span>
+										<span class="item_price"><p>
+												<del>
+
+													<fmt:formatNumber value="${product.proPrice}"
+														type="currency" />
+												</del>
+											</p> </span>
 									</div>
 								</c:if>
 								<c:if test="${!product.proIsDiscount}">
 									<div class="item_add">
 										<span class="item_price">
-											<h4>${product.proPrice}&#32;đ</h4>
+											<h4>
+												<fmt:formatNumber value="${product.proPrice}"
+													type="currency" />
+											</h4>
 										</span>
 									</div>
 								</c:if>
 								<c:if test="${product.proIsDiscount}">
 									<div class="item_add">
 										<span class="item_price">
-											<h4>${product.proPrice - product.proPrice*product.proDiscountRatio/100}&#32;đ</h4>
+											<h4>
+												<fmt:formatNumber
+													value="${product.proPrice - product.proPrice*product.proDiscountRatio/100}"
+													type="currency" />&#160;(&#45;${Math.round(product.proDiscountRatio)}%)
+											</h4>
 										</span>
 									</div>
 								</c:if>
@@ -173,24 +184,28 @@
 		let visiblePages = ${paging.visiblePages};
 		let currentPage = ${paging.page};// default
 		let limit = 8;
+		
+		let proTypeCode = $('#productTypeCode').val();
+			
 		let baseUrl = 'http://localhost:8080/';
-	
 		apiUrl = {
 			products: {
-				all: baseUrl + 'products?limit='+limit+'&',
+				all: baseUrl + 'products?limit='+limit,
 				image: baseUrl + 'resources/images/products/',
 				cart: baseUrl + 'products/add-to-cart/',
+				byProductType: baseUrl +  'products/product-type?product_type_code=' + proTypeCode,
 			}
 		}
 	
-		viewMore(apiUrl.products.all);
+		viewMore(apiUrl.products.byProductType);
 		//--------------------------------------------------------------
+		
+		// Xem thêm sản phẩm
 		function viewMore(url) {
 			$('#viewMoreBtn').click( () => {
 				currentPage += 1;
-				console.log(url + 'page='+currentPage);
-				$.get( url + 'page='+currentPage,
-						(res, status) => {
+				$.get( url + '&limit=8&page='+currentPage
+						,(res, status) => {
 							renderHtml(res.data);
 							// xóa nút xem thêm
 							if(currentPage === totalPages)
@@ -205,19 +220,28 @@
 			data.forEach(ele => { 
 				html += '<div class="grid1_of_4">';
 				html += '	<div class="border">';
-				html += '		<div class="content_box"><a href="details.html">';
+				html += '		<div class="content_box"><a href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">';
 				html += '			<img src="'+apiUrl.products.image + ele.proImages[0].proImageName +'" class="img-responsive" alt="loading..." />';
 				html += '			</a>';
 				html += '		</div>';
-				html += '		<h5><a href="details.html">'+ele.proName+'</a></h5>';
-				html += '		<div class="item_add"><span class="item_price">';
-				html += '			<p><del>'+ele.proPrice+'</del></p>';
-				html += '		</span></div>';
-				html += '		<div class="item_add"><span class="item_price">';
-				html += '			<h4>'+ele.proPrice+'</h4>';
-				html += '		</span></div>';
-				html += '		<p>Chỉ còn 2 sản phẩm</p>';
-				html += '		<div class="item_add"><span class="item_price"><a href="#">add to cart</a></span></div>';
+				html += '		<h5><a href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">'+ele.proName+'</a></h5>';
+				if(!ele.proIsDiscount){
+					html += '		<div class="item_add"><span class="item_price">';
+					html += '			<p>&#160;</p>';
+					html += '		</span></div>';
+					html += '		<div class="item_add"><span class="item_price">';
+					html += '			<h4>'+(ele.proPrice/1000).toFixed(3)+ ' đ' + '</h4>';
+					html += '		</span></div>';
+				}else{
+					html += '		<div class="item_add"><span class="item_price">';
+					html += '			<p><del>'+(ele.proPrice/1000).toFixed(3)+ ' đ' + '</del></p>';
+					html += '		</span></div>';
+					html += '		<div class="item_add"><span class="item_price">';
+					html += '			<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ&#160;(&#45;' + ele.proDiscountRatio + '&#37;)</h4>';
+					html += '		</span></div>';
+				}	
+				html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' sản phẩm</p>':'<p>&#160;</p>';
+				html += '		<div class="item_add"><span class="item_price"><a href="#">Thêm vào giỏ</a></span></div>';
 				html += '	</div>';
 				html += '</div>';
 				

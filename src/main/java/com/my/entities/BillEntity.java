@@ -31,8 +31,9 @@ public class BillEntity extends BaseEntity {
 	@Column(name = "bilAmount", nullable = false, columnDefinition = "int")
 	private int bilAmount;
 
-	@Column(name = "bilPaid", nullable = false)
-	private boolean bilPaid;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "bs_id", nullable = false, columnDefinition = "bigint")
+	private BillStatusEnitity bilStatus;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", nullable = true, columnDefinition = "bigint")
@@ -42,7 +43,7 @@ public class BillEntity extends BaseEntity {
 	@JoinColumn(name = "cus_id", nullable = true, columnDefinition = "bigint")
 	private CustomerEntity bilCus;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "pbBill")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pbBill")
 	private List<ProductBillEntity> bilProducts = new ArrayList<>();
 
 	public BillEntity() {
@@ -51,7 +52,7 @@ public class BillEntity extends BaseEntity {
 	public BillEntity(Long bilId) {
 		this.bilId = bilId;
 	}
-	
+
 	public static boolean isExitField(String sortParam) {
 		try {
 			BillEntity.class.getDeclaredField(sortParam);

@@ -18,7 +18,7 @@ p {
 }
 
 html, body {
-	font-family: 'Roboto', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 100%;
 	background: #ffffff;
 }
@@ -314,9 +314,9 @@ a.item_add1 {
 }
 
 a.item_add1:hover {
-	background: rgb(3, 193, 167);
-	text-decoration: none;
-	color: #fff;
+/* 	background: rgb(3, 193, 167); */
+/* 	text-decoration: none; */
+/* 	color: #fff; */
 }
 
 .btn_5 {
@@ -720,7 +720,6 @@ input:focus {
 	position: relative;
 	font-size: 0.8725em;
 	-webkit-appearance: none;
-	text-transform: capitalize;
 }
 
 .search input[type="text"]:hover {
@@ -1075,7 +1074,7 @@ ul.megamenu.skyblue {
 	font-weight: 500;
 	color: #f9f9f9;
 	margin: 0 0 0.5em;
-	font-family: 'Playfair Display', serif;
+	font-family: 'Open Sans', sans-serif;
 }
 
 .arriv p {
@@ -1154,7 +1153,7 @@ i.ars {
 	color: #3f3d3d;
 	font-size: 1.1em;
 	font-weight: 400;
-	font-family: 'Playfair Display', serif;
+	font-family: 'Open Sans', sans-serif;
 	text-align: center;
 	margin: 0;
 }
@@ -1301,7 +1300,7 @@ i.goog:hover {
 
 .footer h4 {
 	color: #3f3d3d;
-	font-family: 'Playfair Display', serif;
+	font-family: 'Open Sans', sans-serif;
 	font-weight: 400;
 	margin: 0 0 1em;
 }
@@ -1466,7 +1465,7 @@ i.mail {
 } */
 
 .special h3 {
-	font-family: 'Playfair Display', serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 1.5em;
 	border-bottom: 2px solid #ef5f21;
 	/* text-align: center; */
@@ -1669,7 +1668,7 @@ ul.grid_2 li {
 
 .sky-form h4 {
 	margin-top: 10px;
-	background: #ef5f21;
+	background: #e4e4e4;
 	padding: 10px 20px;
 	color: #333333;
 	text-transform: uppercase;
@@ -2012,7 +2011,7 @@ ul.grid_2 li {
 .women h4 {
 	float: left;
 	font-size: 1em;
-	text-transform: uppercase;
+	text-transform: none;
 	color: #333333;
 }
 
@@ -2200,7 +2199,7 @@ span.text {
 }
 
 span.price-new {
-	color: #ff6978;
+	color: #ef5f21;
 	margin-right: 15px;
 	font-weight: 500;
 	font-size: 1.3em;
@@ -2424,7 +2423,7 @@ p.product_descr {
 .button1 {
 	font-family: 'Open Sans', sans-serif;
 	border: none;
-	background: #ff6978;
+	background: #ef5f21;
 	padding: 7px 15px;
 	color: #FFF;
 	font-size: 13px;
@@ -2438,7 +2437,7 @@ p.product_descr {
 }
 
 .button1:hover {
-	background: #00405d;
+	background: #0f0f0f;
 	color: #fff;
 }
 
@@ -2515,10 +2514,9 @@ p.product_descr {
 	outline: none;
 	display: inline-block;
 	font-size: 1em;
-	padding: 10px 34px;
-	background: #ff6978;
+	padding: 6px 15px;
+	background: #ef5f21;
 	color: #fff;
-	text-transform: uppercase;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
@@ -2526,7 +2524,7 @@ p.product_descr {
 }
 
 .btn_form a:hover {
-	background: #00405d;
+	background: #0f0f0f;
 	text-decoration: none;
 }
 
@@ -3022,7 +3020,7 @@ p.cart a {
 	display: inline-block;
 	font-size: 1em;
 	padding: 12px 25px;
-	background: #ff6978;
+	background: #ef5f21;
 	color: #fff;
 	text-transform: uppercase;
 	-webkit-transition: all 0.3s ease-in-out;
@@ -4084,4 +4082,27 @@ p.cart a {
 		width: 18%;
 		margin-top: 5px;
 	}
+}
+
+/* custom css -----------------------------------------------------------*/
+
+.viewAll{
+	float: right; 
+	font-size: 15px;
+	background-color: #ef5f21;
+	color: white;
+	border: none;
+	padding: 5px;
+}
+
+.loading-spinner {
+  font-size: 12px;
+  margin: 25% auto;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  -webkit-animation: load4 1.3s infinite linear;
+  animation: load4 1.3s infinite linear;
 }

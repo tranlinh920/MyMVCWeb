@@ -5,7 +5,7 @@
 <link
 	href="${pageContext.request.contextPath}/resources/plugin/fontawesome/css/font-awesome.min.css"
 	rel="stylesheet" type="text/css">
-	<link
+<link
 	href="${pageContext.request.contextPath}/resources/plugin/medium-zoom/css/zoom.css"
 	rel="stylesheet" type="text/css">
 <link
@@ -16,3 +16,4 @@
 <link
 	href="${pageContext.request.contextPath}/resources/admin/css/sb-admin-2.min.css"
 	rel="stylesheet">
+

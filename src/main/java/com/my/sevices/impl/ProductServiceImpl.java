@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDTO> findAll(Pageable pageable) {
 		List<ProductDTO> dtos = new ArrayList<ProductDTO>();
-		List<ProductEntity> entities = productRepository.findByIsActiveTrue(pageable).getContent();
+		List<ProductEntity> entities = productRepository.findAllByIsActiveTrue(pageable).getContent();
 		entities.forEach(entity -> {
 			dtos.add(productConverter.toDTO(entity));
 		});
@@ -94,7 +94,8 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductDTO> findByProType(ProductTypeDTO typeDTO, Pageable pageable) {
 		List<ProductDTO> dtos = new ArrayList<ProductDTO>();
 		List<ProductEntity> entities = //
-				productRepository.findByProTypeAndIsActiveTrue(productTypeConverter.toEntity(typeDTO), pageable).getContent();
+				productRepository.findByProTypeAndIsActiveTrue(productTypeConverter.toEntity(typeDTO), pageable)
+						.getContent();
 
 		entities.forEach(entity -> {
 			dtos.add(productConverter.toDTO(entity));
@@ -121,6 +122,18 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Long count() {
 		return productRepository.countByIsActiveTrue();
+	}
+
+	@Override
+	public Long countByProType(String proTypeCode) {
+		ProductTypeEntity entity = productTypeRepository.findOneByProTypeCode(proTypeCode);
+		return productRepository.countByProTypeAndIsActiveTrue(entity);
+
+	}
+
+	@Override
+	public Long countByProNameContaining(String searchString) {
+		return productRepository.countByProNameContainingIgnoreCase(searchString);
 	}
 
 	@Override
@@ -203,4 +216,13 @@ public class ProductServiceImpl implements ProductService {
 		productRepository.save(entity);
 	}
 
+	@Override
+	public List<ProductDTO> findByProNameContaining(String proName,Pageable pageable) {
+		List<ProductDTO> dtos = new ArrayList<ProductDTO>();
+		List<ProductEntity> entities = productRepository.findByProNameContainingIgnoreCase(proName,pageable);
+		entities.forEach(entity -> {
+			dtos.add(productConverter.toDTO(entity));
+		});
+		return dtos;
+	}
 }

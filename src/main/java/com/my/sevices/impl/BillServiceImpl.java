@@ -10,15 +10,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.my.converter.BillConverter;
+import com.my.converter.BillStatusConverter;
 import com.my.converter.ProductBillConverter;
 import com.my.dto.BillDTO;
+import com.my.dto.BillStatusDTO;
 import com.my.dto.ProductBillDTO;
 import com.my.dto.ProductDTO;
 import com.my.dto.UserDTO;
 import com.my.entities.BillEntity;
+import com.my.entities.BillStatusEnitity;
 import com.my.entities.ProductBillEntity;
 import com.my.repositories.BillRepository;
+import com.my.repositories.BillStatusRepository;
 import com.my.services.BillService;
+import com.my.services.BillStatusService;
 import com.my.services.CustomerService;
 import com.my.services.ProductBillService;
 import com.my.services.ProductService;
@@ -33,10 +38,19 @@ public class BillServiceImpl implements BillService {
 	private BillRepository billRepository;
 
 	@Autowired
+	private BillStatusRepository billStatusRepository;
+
+	@Autowired
 	private BillConverter billconverter;
 
 	@Autowired
+	private BillStatusConverter billStatusConverter;
+
+	@Autowired
 	private ProductBillConverter productBillConverter;
+
+	@Autowired
+	private BillStatusService billStatusService;
 
 	@Autowired
 	private CustomerService customerService;
@@ -61,6 +75,12 @@ public class BillServiceImpl implements BillService {
 
 	}
 
+	public BillDTO findOne(Long bilId) {
+		BillEntity entity = billRepository.findOne(bilId);
+		BillDTO dto = billconverter.toDTO(entity);
+		return dto;
+	}
+
 	@Override
 	public BillDTO save(BillDTO billDto) {
 
@@ -69,6 +89,9 @@ public class BillServiceImpl implements BillService {
 			ProductDTO proDto = productService.findOne(ele.getPbProduct().getProId());
 			ele.setPbProduct(proDto);
 		});
+
+		// thiết lập trạng thái đơn hàng
+		billDto.setBilStatus(billStatusService.findByBsCode(billDto.getBilStatus().getBsCode()));
 
 		if (SecurityUtil.getUserDetails() == null) {
 			// lưu thông tin khách hàng
@@ -96,7 +119,7 @@ public class BillServiceImpl implements BillService {
 
 		// lưu thông tin sản phẩm trong hóa đơn
 		ProductBillDTO dtoEle;
-		for (ProductBillEntity ele : billEntity.getBilProducts()) {
+		for (ProductBillEntity ele : billEntity.getBilProducts()) {;
 			ele.setPbBill(new BillEntity(billEntity.getBilId()));
 			dtoEle = productBillConverter.toDTO(ele);
 			pbService.save(dtoEle);
@@ -131,6 +154,15 @@ public class BillServiceImpl implements BillService {
 	@Override
 	public Long count() {
 		return billRepository.countByIsActiveTrue();
+	}
+
+	@Override
+	public BillStatusDTO updateStatus(Long billId, BillDTO dto) {
+		BillStatusEnitity bsCode = billStatusRepository.findByBsCode(dto.getBilStatus().getBsCode());
+		BillEntity entity = billRepository.findOne(billId);
+		entity.setBilStatus(bsCode);
+		entity.setModifiedDate(Calendar.getInstance());
+		return billStatusConverter.toDTO(entity.getBilStatus());
 	}
 
 }

@@ -17,6 +17,8 @@ public class ProductDTO extends BaseDTO {
 	private boolean proIsDiscount;
 	private double proDiscountRatio;
 	private int proAmount;
+	//private List<ProductBillDTO> proBills;
+	private int numOfProBuyed;
 	private boolean proIsScarcity;
 	private String proDescribe;
 	private List<ProductImageDTO> proImages;

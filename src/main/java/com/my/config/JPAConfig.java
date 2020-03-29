@@ -67,13 +67,22 @@ public class JPAConfig {
 		return dataSource;
 	}
 
+//	@Bean
+//	public DataSource dataSource() {
+//		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+//		dataSource.setUrl("jdbc:mysql://node221542-futuxe.enscaled.sg/mymvcweb");
+//		dataSource.setUsername("root");
+//		dataSource.setPassword("rr3zrIQ388");
+//		return dataSource;
+//	}
+
 	Properties additionalProperties() {
 		Properties properties = new Properties();
-		// properties.setProperty("hibernate.hbm2ddl.auto", "none");
 		properties.setProperty("hibernate.hbm2ddl.auto", "none");
-//		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
-		 properties.setProperty("hibernate.show_sql", "true");
-		 properties.setProperty("hibernate.generate_statistics", "true");
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+// properties.setProperty("hibernate.show_sql", "true");
+// properties.setProperty("hibernate.generate_statistics", "true");
 		return properties;
 	}
 }

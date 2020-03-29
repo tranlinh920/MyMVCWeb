@@ -1,5 +1,6 @@
 package com.my.interceptors;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.my.dto.UserDTO;
+import com.my.entities.AccessStatisticEntity;
 import com.my.models.Category;
+import com.my.services.AccessStatisticService;
 import com.my.services.UserService;
 import com.my.sevices.impl.MenuServiceImpl;
 import com.my.utils.SecurityUtil;
@@ -23,9 +26,13 @@ public class WebInterceptor extends HandlerInterceptorAdapter {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private AccessStatisticService statisticService;
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+
 		// Khởi tạo navigation menu
 		if (request.getAttribute("navs") == null) {
 			List<Category> navs = menuService.getNavigationBars();
@@ -50,6 +57,13 @@ public class WebInterceptor extends HandlerInterceptorAdapter {
 		if (request.getSession().getAttribute("CART-SIZE") != null) {
 			int cartSize = (int) request.getSession().getAttribute("CART-SIZE");
 			request.setAttribute("cartSize", cartSize);
+		}
+
+		// thêm lượt truy cập
+		if (request.getSession().isNew()) {
+			System.out.println("session is new: " + request.getSession().isNew());
+			System.out.println("session Id: " + request.getSession().getId());
+			statisticService.save(new AccessStatisticEntity(Calendar.getInstance(), 1));
 		}
 
 		return true;

@@ -13,7 +13,7 @@
 							<c:if test="${not empty sideBar.catCategories}">
 								<c:forEach var="item" items="${sideBar.catCategories}">
 									<label><a href="${item.catLink}" style="color: black;"><i
-											style="color: orange;" class="fa fa-dot-circle-o"></i>
+											style="color: #333333;" class="fa fa-dot-circle-o"></i>
 											${item.catName}</a></label>
 								</c:forEach>
 							</c:if>

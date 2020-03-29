@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.my.dto.ProductDTO;
 import com.my.dto.ProductImageDTO;
+import com.my.dto.ProductTypeDTO;
 import com.my.entities.ProductEntity;
 import com.my.models.ProductUpload;
 import com.my.models.Result;
 import com.my.paging.PagingComponent;
 import com.my.services.ProductService;
+import com.my.services.ProductTypeService;
 
 @RestController
 @RequestMapping("/products")
@@ -34,6 +36,9 @@ public class ProductController {
 	ProductService productService;
 
 	@Autowired
+	ProductTypeService productTypeService;
+
+	@Autowired
 	private PagingComponent pagingComponent;
 
 	@GetMapping()
@@ -41,8 +46,7 @@ public class ProductController {
 			@RequestParam(defaultValue = "1") int page, //
 			@RequestParam(defaultValue = "10") int limit, //
 			@RequestParam(name = "sort_type", required = false) String sortType, //
-			@RequestParam(name = "sort_param", required = false) String sortParam, // chọn field để sắp xếp
-			@RequestParam(name = "pro_price", required = false) Double proPrice//
+			@RequestParam(name = "sort_param", required = false) String sortParam // chọn field để sắp xếp
 	) {
 		int totalItem = productService.count().intValue();
 		int visiblePages = 5;
@@ -53,7 +57,7 @@ public class ProductController {
 		List<ProductDTO> products = productService.findAll(pagingComponent.getPageable());
 		Result<List<ProductDTO>> result = new Result<>(//
 				200, products, pagingComponent.getPaging());
-		
+
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
@@ -123,8 +127,8 @@ public class ProductController {
 			}
 			proIdList.clear();
 			int cartSize = proIdList.size();
-			session.setAttribute("PRODUCTIDS-CART", proIdList);
-			session.setAttribute("CART-SIZE", cartSize);
+			session.removeAttribute("PRODUCTIDS-CART");
+			session.removeAttribute("CART-SIZE");
 			result = new Result<>(200, cartSize, "Delete successful");
 			return new ResponseEntity<>(result, HttpStatus.OK);
 		} catch (Exception e) {
@@ -160,6 +164,58 @@ public class ProductController {
 			result = new Result<>(500, "Delete field: " + e.getMessage());
 			return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@GetMapping("/product-type")
+	public ResponseEntity<?> getRandomByProductType(//
+			@RequestParam(defaultValue = "1") int page, //
+			@RequestParam(defaultValue = "4") int limit, //
+			@RequestParam(name = "sort_type", required = false) String sortType, //
+			@RequestParam(name = "sort_param", required = false) String sortParam, //
+			@RequestParam(name = "get_random", required = false, defaultValue = "false") boolean randomGetting, //
+			@RequestParam(name = "product_type_code", defaultValue = "oc") String proTypeCode// chọn field để sắp xếp
+	) {
+		int totalItem = productService.countByProType(proTypeCode).intValue();
+		int visiblePages = 1;
+
+		if (randomGetting) {
+			int totalPages = (int) Math.ceil((double) totalItem / limit);
+			int randomPage = (int) (Math.random() * totalPages + 1);
+			page = ((randomPage >= totalPages) && (randomPage > 1)) ? (randomPage - 1) : randomPage;
+		}
+
+		boolean entityExitField = ProductEntity.isExitField(sortParam);
+		pagingComponent = pagingComponent.doPagingAndSort(//
+				page, limit, totalItem, visiblePages, sortType, sortParam, entityExitField);
+
+		ProductTypeDTO proTypeDTO = productTypeService.findOneByCode(proTypeCode);
+		List<ProductDTO> products = productService.findByProType(proTypeDTO, pagingComponent.getPageable());
+		Result<List<ProductDTO>> result = new Result<>(//
+				200, products, pagingComponent.getPaging());
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<?> search(//
+			@RequestParam("p") String searchString, //
+			@RequestParam(defaultValue = "1") int page, //
+			@RequestParam(defaultValue = "8") int limit, //
+			@RequestParam(name = "sort_type", required = false) String sortType, //
+			@RequestParam(name = "sort_param", required = false) String sortParam //
+	) {
+		int totalItem = productService.countByProNameContaining(searchString).intValue();
+		int visiblePages = 5;
+		boolean entityExitField = ProductEntity.isExitField(sortParam);
+		pagingComponent = pagingComponent.doPagingAndSort(//
+				page, limit, totalItem, visiblePages, sortType, sortParam, entityExitField);
+
+		List<ProductDTO> products = productService.findByProNameContaining(searchString, pagingComponent.getPageable());
+
+		Result<List<ProductDTO>> result = new Result<>(//
+				200, products, pagingComponent.getPaging());
+
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	/** Xử lý khi dữ liệu gửi lên sai hoặc thiếu **/

@@ -79,5 +79,27 @@ public class MenuServiceImpl {
 	public static void main(String[] args) {
 		System.out.println(Arrays.toString(new MenuServiceImpl().getNavigationBars().toArray()));
 	}
+	
+//	Danh Mục Sản Phẩm
+//	🏍️ Đồ chơi xe máy
+//	- kính chiếu hậu
+//	- Đĩa xe máy
+//	- Bao tay + gù
+//	-Đèn led
+//	👉 Phụ tùng thay thế
+//	 Giống nó tự tìm
+//	👉 Vỏ xe máy
+//	- vỏ xe Michelin
+//	- vỏ xe maxxis
+//	👉 Nhớt xe máy
+//	- Motul
+//	- Repsol
+//	- Castrol
+//	- total
+//	👉 Phụ kiện biker " Đéo có"
+//	👉Phụ tùng theo xe
+//	- Honda
+//	- Yamaha
+//	- Sym
 
 }

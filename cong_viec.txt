@@ -15,4 +15,7 @@ Xóa sản phẩm
 Tạo menu động bằng interceptor và jstl 
 
 Hiển thị trang chi tiết sản phẩm
-Đổi sang mysql: chú ý phần column defined 
+Đổi sang mysql: chú ý phần column defined và kiểu dữ liệu của biến
+
+Hiển thị trang giỏ hàng bào gồm xóa sản phẩm ra khỏi giỏ và thanh toán
+

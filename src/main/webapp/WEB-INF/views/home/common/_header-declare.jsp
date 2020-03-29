@@ -15,6 +15,9 @@
 	href="${pageContext.request.contextPath}/resources/home/css/style.css"
 	rel='stylesheet' type='text/css' />
 <link
+	href="${pageContext.request.contextPath}/resources/home/css/slide-show.css"
+	rel='stylesheet' type='text/css' />
+<link
 	href="${pageContext.request.contextPath}/resources/home/css/etalage.css"
 	rel="stylesheet" type="text/css" />
 <!-- Custom Theme files -->

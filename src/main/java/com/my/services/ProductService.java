@@ -11,6 +11,7 @@ import com.my.dto.ProductTypeDTO;
 import com.my.models.ProductUpload;
 
 public interface ProductService {
+
 	public List<ProductDTO> findAll(Pageable pageable);
 
 	public ProductDTO findOne(Long proId);
@@ -19,6 +20,8 @@ public interface ProductService {
 
 	public Long count();
 
+	public Long countByProType(String proTypeCode);
+
 	public ResponseEntity<?> save(ProductDTO dto);
 
 	public ResponseEntity<?> save(ProductUpload pro, String uploadPath);
@@ -26,5 +29,9 @@ public interface ProductService {
 	public void delete(Long proId);
 
 	public List<ProductDTO> findByProType(ProductTypeDTO typeDTO, Pageable pageable);
+
+	public Long countByProNameContaining(String searchString);
+
+	public List<ProductDTO> findByProNameContaining(String searchString, Pageable pageable);
 
 }

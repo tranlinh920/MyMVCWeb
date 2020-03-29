@@ -10,8 +10,8 @@ import lombok.EqualsAndHashCode;
 public class BillDTO extends BaseDTO {
 	private Long bilId;
 	private int bilAmount;
-	private boolean bilPaid;
 	private UserDTO bilUser;
 	private CustomerDTO bilCus;
 	private List<ProductBillDTO> bilProducts;
+	private BillStatusDTO bilStatus;
 }

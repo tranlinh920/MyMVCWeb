@@ -60,7 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")//
 				.antMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")//
 				.antMatchers("/bills/**").permitAll()//
-				.antMatchers(HttpMethod.DELETE, "/bills/**").hasRole("ADMIN");
+				.antMatchers(HttpMethod.DELETE, "/bills/**").hasRole("ADMIN")//
+				.antMatchers("/bills/status/**").hasRole("ADMIN")//
+				.antMatchers(HttpMethod.GET, "/bills/status/**").permitAll();//
 
 		// When the user has logged in as XX.
 		// But access a page that requires role YY,

@@ -31,6 +31,9 @@ public class ProductBillEntity extends BaseEntity {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "bil_id", nullable = false, columnDefinition = "bigint")
 	private BillEntity pbBill;
+	
+	@Column(name = "pbAmount", nullable = false, columnDefinition = "int")
+	private int pbAmount;
 
 	@Column(name = "pbPrice", nullable = false, columnDefinition = "int")
 	private int pbPrice;

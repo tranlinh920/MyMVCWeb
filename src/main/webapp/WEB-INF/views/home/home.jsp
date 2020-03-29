@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,72 +16,49 @@
 	<!-- Header -->
 	<%@ include file="/WEB-INF/views/home/common/_header.jsp"%>
 
+	<div>
+		<div class="slideshow-container">
+
+			<div class="mySlides fade">
+				<img
+					src="${pageContext.request.contextPath}/resources/home/img/img_nature_wide.jpg"
+					style="width: 100%">
+			</div>
+
+			<div class="mySlides fade">
+				<img
+					src="${pageContext.request.contextPath}/resources/home/img/img_snow_wide.jpg"
+					style="width: 100%">
+			</div>
+
+			<div class="mySlides fade">
+				<img
+					src="${pageContext.request.contextPath}/resources/home/img/img_mountains_wide.jpg"
+					style="width: 100%">
+			</div>
+		</div>
+	</div>
+
 	<div class="special">
 		<div class="container">
-			<h3>Sản phẩm mới</h3>
+			<h3>
+				Ốc <a href="http://localhost:8080/san-pham/oc"><button
+						class="viewAll">Xem tất cả &#187;</button></a>
+			</h3>
 			<div class="specia-top">
-				<ul class="grid_2">
-					<li><a href="details.html"><img
-							src="${pageContext.request.contextPath}/resources/home/img/8.jpg"
-							class="img-responsive" alt=""></a>
-						<div class="special-info grid_1 simpleCart_shelfItem">
-							<h5>Lorem ipsum dolor</h5>
-							<div class="item_add">
-								<span class="item_price">
-									<h6>ONLY $40.00</h6>
-								</span>
-							</div>
-							<div class="item_add">
-								<span class="item_price"><a href="#">Thêm vào giỏ</a></span>
-							</div>
-						</div></li>
-					<li><a href="details.html"><img
-							src="${pageContext.request.contextPath}/resources/home/img/9.jpg"
-							class="img-responsive" alt=""></a>
-						<div class="special-info grid_1 simpleCart_shelfItem">
-							<h5>Consectetur adipis</h5>
-							<div class="item_add">
-								<span class="item_price">
-									<h6>ONLY $60.00</h6>
-								</span>
-							</div>
-							<div class="item_add">
-								<span class="item_price"><a href="#">Thêm vào giỏ</a></span>
-							</div>
-						</div></li>
-					<li><a href="details.html"><img
-							src="${pageContext.request.contextPath}/resources/home/img/10.jpg"
-							class="img-responsive" alt=""></a>
-						<div class="special-info grid_1 simpleCart_shelfItem">
-							<h5>Commodo consequat</h5>
-							<div class="item_add">
-								<span class="item_price">
-									<h6>ONLY $14.00</h6>
-								</span>
-							</div>
-							<div class="item_add">
-								<span class="item_price"><a href="#">Thêm vào giỏ</a></span>
-							</div>
-						</div></li>
-					<li><a href="details.html"><img
-							src="${pageContext.request.contextPath}/resources/home/img/11.jpg"
-							class="img-responsive" alt=""></a>
-						<div class="special-info grid_1 simpleCart_shelfItem">
-							<h5>Voluptate velit</h5>
-							<div class="item_add">
-								<span class="item_price">
-									<h6>ONLY $37.00</h6>
-								</span>
-							</div>
-							<div class="item_add">
-								<span class="item_price"><a href="#">Thêm vào giỏ</a></span>
-							</div>
-						</div></li>
-					<div class="clearfix"></div>
+				<ul class="grid_2" id="oc">
+					<!-- data here -->
 				</ul>
 			</div>
-			<h3>Sản phẩm bán chạy</h3>
-
+			<h3>
+				Đèn trợ sáng <a href="http://localhost:8080/san-pham/den-tro-sang"><button
+						class="viewAll">Xem tất cả &#187;</button></a>
+			</h3>
+			<div class="specia-top">
+				<ul class="grid_2" id="denTroSang">
+					<!-- data here -->
+				</ul>
+			</div>
 		</div>
 	</div>
 	<div class="foot-top">
@@ -130,5 +108,105 @@
 
 	<!-- Footer declare -->
 	<%@ include file="/WEB-INF/views/home/common/_footer.jsp"%>
+	<%@ include file="/WEB-INF/views/home/common/_footer-declare.jsp"%>
+
+	<div id="custom-overlay">
+		<div class="loading-spinner">Loading (custom)...</div>
+	</div>
+
+	<script>
+	
+		let baseUrl = 'http://localhost:8080/';
+		apiUrl = {
+			products: {
+				all: baseUrl + 'products',
+				image: baseUrl + 'resources/images/products/',
+				cart: baseUrl + 'products/add-to-cart/',
+				byProductType: baseUrl +  'products/product-type',
+			}
+		}
+	
+		initData("#oc", apiUrl.products.byProductType + '?product_type_code=oc&get_random=true&limit=4');
+		initData("#denTroSang", apiUrl.products.byProductType + '?product_type_code=den-tro-sang&get_random=true&limit=4');
+		var slideIndex = 0;
+		showSlides();
+		//--------------------------------------------
+
+		function initData(elemenId, url) {	
+			 $('body').loading({
+				  stoppable: false,
+				  overlay: $("#custom-overlay")
+			 });
+			$.ajax({
+				 url: url,
+				 async: false,
+				 success: (res, status)=>{
+					 renderHtml(elemenId,res.data);
+				 },
+			});
+			
+		}
+		
+		function renderHtml(elemenId,data){
+			html = '';
+			data.forEach(ele => {
+				html += '<li>';
+				html += '	<a href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">';
+				html += '		<img src="'+ apiUrl.products.image +ele.proImages[0].proImageName+'" class="img-responsive" alt="loading...">';
+				html += '	</a>';
+				html += '	<div class="special-info grid_1 simpleCart_shelfItem">';
+				html += '		<h5><a class="product_link" href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'"></a>'+ele.proName+'</h5>';
+				if(!ele.proIsDiscount){
+					html += '		<div class="item_add">';
+					html += '			<span class="item_price">';
+					html += '				<p>&#160;</p>';
+					html += '				<h4>'+(ele.proPrice/1000).toFixed(3)+' đ'+'</h4>';
+					html += '			</span>';
+					html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' sản phẩm</p>':'<p>&#160;</p>';
+					html += '		</div>';
+				}else{
+					html += '		<div class="item_add">';
+					html += '			<span class="item_price">';
+					html += '				<p><del>'+(ele.proPrice/1000).toFixed(3)+ ' đ' +'</del></p>';
+					html += '				<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ&#160;(&#45;' + ele.proDiscountRatio + '&#37;)</h4>';
+					html += '			</span>';
+					html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' sản phẩm</p>':'<p>&#160;</p>';
+					html += '		</div>';
+				}
+				html += '		<div class="item_add">';
+				html += '			<span class="item_price"><a href="#" onClick="addToCart('+ele.proId+')">Thêm vào giỏ</a></span>';
+				html += '		</div>';
+				html += '	</div>';
+				html += '</li>';
+			});		
+			html += '<div class="clearfix"></div>';
+			$(elemenId).html(html);
+		}
+		
+		// Thêm sản phẩm vào giỏ
+		function addToCart(proId){
+			console.log('addToCart: ' + proId);
+			 url = apiUrl.products.cart + proId; 
+			 $.post(url,{},(res, status) => {
+				 $('#simpleCart_quantity').html(res.data);
+				 alert("Thêm thành công");
+			    }
+			 );
+		}
+		
+		function showSlides() {
+			  var i;
+			  var slides = document.getElementsByClassName("mySlides");
+			  for (i = 0; i < slides.length; i++) {
+			    slides[i].style.display = "none";  
+			  }
+			  slideIndex++;
+			  if (slideIndex > slides.length) {slideIndex = 1}    
+
+			  slides[slideIndex-1].style.display = "block";  
+			  setTimeout(showSlides, 2000); // Change image every 2 seconds
+		}
+	</script>
+
 </body>
 </html>

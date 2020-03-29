@@ -61,7 +61,7 @@
 											</c:if></li>
 										<c:forEach var="ele" items="${numOfProId}">
 											<c:if test="${ele.key == product.proId}">
-												<p>Số lượng mua: ${ele.value}</p>
+												<p name="numOfProduct">Số lượng mua: ${ele.value}</p>
 												<c:if test="${!product.proIsDiscount}">
 													<c:set var="proTotalPrice"
 														value="${product.proPrice*ele.value}" />
@@ -308,6 +308,8 @@
 			    	$('#totalBillAmount').val(0);
 			    	// cập nhật số lượng giỏ
 			    	$('#simpleCart_quantity').html(res.data);
+			    	// xóa sản phẩm trong mảng
+			    	bilProducts.length = 0;
 			    }
 			});
 		}
@@ -320,9 +322,12 @@
         			 "pbProduct": {
 	                        "proId": ele.proId
 	                    },
-	                  "pbPrice": pbPrice
+	                  "pbPrice": pbPrice,
+	                  "pbAmount": ele.numOfProBuyed
         		 });
         	 });
+			 
+			 $('p[name ="numOfProduct"]')
 		}
 		
 		// Thực hiện thanh toán
@@ -341,7 +346,6 @@
 			 	   
 			 let bill =  {
 		            "bilAmount": $('#totalBillAmount').val(),
-		            "bilPaid": false,
 		            "bilCus": {
 		                "cusFullName": $('#cusFullName').val(),
 		                "cusEmail": $('#cusEmail').val(),
@@ -350,6 +354,9 @@
 		                "isActive": true
 		            },
 		            "bilProducts": bilProducts,
+		            "bilStatus": {
+		            	"bsCode":"cho-xac-nhan"
+		            },
 		            "isActive": true
 		       }
 			  
@@ -455,6 +462,7 @@
 			$('#checkoutAlert').addClass('alert alert-'+type);
 			$('#checkoutAlert').html(massage);
 			$('#checkoutAlert').attr('hidden',false);
+			window.scrollTo(0,600); 
 		}
 		
 	</script>
