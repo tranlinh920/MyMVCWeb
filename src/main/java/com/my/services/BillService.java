@@ -17,6 +17,12 @@ public interface BillService {
 
 	public Long count();
 
+	public Long countByBilStatus(String bilStaCode);
+
 	public BillStatusDTO updateStatus(Long billId, BillDTO dto);
+
+	public void delete(Long proId);
+
+	public List<BillDTO> findByBilStatus(BillStatusDTO bilStaDto, Pageable pageable);
 
 }

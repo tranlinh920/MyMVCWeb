@@ -28,14 +28,14 @@
 							id="productTypeCode" value="${productType.proTypeCode}">
 						</a>
 					</c:if>
-					<ul class="w_nav">
-						<li>Sort :</li>
-						<li><a class="active" href="#">popular</a></li> |
-						<li><a href="#">new </a></li> |
-						<li><a href="#">discount</a></li> |
-						<li><a href="#">price: Low High </a></li>
-						<div class="clear"></div>
-					</ul>
+					<!-- 					<ul class="w_nav"> -->
+					<!-- 						<li>Sort :</li> -->
+					<!-- 						<li><a class="active" href="#">popular</a></li> | -->
+					<!-- 						<li><a href="#">new </a></li> | -->
+					<!-- 						<li><a href="#">discount</a></li> | -->
+					<!-- 						<li><a href="#">price: Low High </a></li> -->
+					<!-- 						<div class="clear"></div> -->
+					<!-- 					</ul> -->
 					<div class="clearfix"></div>
 				</div>
 				<!-- grids_of_4 -->
@@ -48,7 +48,7 @@
 										href="http://localhost:8080/chi-tiet-san-pham/${product.proId}">
 										<img
 										src="http://localhost:8080/resources/images/products/${product.proImages[0].proImageName}"
-										class="img-responsive" alt="" />
+										class="img-responsive" alt="">
 									</a>
 								</div>
 								<h5>
@@ -89,7 +89,9 @@
 											<h4>
 												<fmt:formatNumber
 													value="${product.proPrice - product.proPrice*product.proDiscountRatio/100}"
-													type="currency" />&#160;(&#45;${Math.round(product.proDiscountRatio)}%)
+													type="currency" />
+												&#160;
+												<%-- 												<span>(&#45;${Math.round(product.proDiscountRatio)}%)</span> --%>
 											</h4>
 										</span>
 									</div>
@@ -113,7 +115,11 @@
 				<input id="viewMoreLocation" type="hidden"></input> <input
 					id="viewMoreInit" type="hidden"></input>
 				<div class="clearfix"></div>
-				<button id="viewMoreBtn" style="margin-top: 20px">Xem thêm</button>
+				<div class=" text-center">
+					<button id="viewMoreBtn"
+						style="margin-top: 20px; background-color: #00405d; color: white;"
+						class="btn btn-default">Xem thêm</button>
+				</div>
 			</div>
 
 			<!-- start sidebar -->
@@ -193,7 +199,7 @@
 				all: baseUrl + 'products?limit='+limit,
 				image: baseUrl + 'resources/images/products/',
 				cart: baseUrl + 'products/add-to-cart/',
-				byProductType: baseUrl +  'products/product-type?product_type_code=' + proTypeCode,
+				byProductType: baseUrl +  'products/product-type/' + proTypeCode,
 			}
 		}
 	
@@ -204,7 +210,7 @@
 		function viewMore(url) {
 			$('#viewMoreBtn').click( () => {
 				currentPage += 1;
-				$.get( url + '&limit=8&page='+currentPage
+				$.get( url + '?limit=8&page='+currentPage
 						,(res, status) => {
 							renderHtml(res.data);
 							// xóa nút xem thêm
@@ -237,7 +243,8 @@
 					html += '			<p><del>'+(ele.proPrice/1000).toFixed(3)+ ' đ' + '</del></p>';
 					html += '		</span></div>';
 					html += '		<div class="item_add"><span class="item_price">';
-					html += '			<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ&#160;(&#45;' + ele.proDiscountRatio + '&#37;)</h4>';
+// 					html += '			<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ&#160;(&#45;' + ele.proDiscountRatio + '&#37;)</h4>';
+					html += '			<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ</h4>';
 					html += '		</span></div>';
 				}	
 				html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' sản phẩm</p>':'<p>&#160;</p>';

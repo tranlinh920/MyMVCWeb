@@ -43,7 +43,7 @@
 		<div class="container">
 			<h3>
 				Ốc <a href="http://localhost:8080/san-pham/oc"><button
-						class="viewAll">Xem tất cả &#187;</button></a>
+						class="viewAll">Xem thêm &#187;</button></a>
 			</h3>
 			<div class="specia-top">
 				<ul class="grid_2" id="oc">
@@ -52,7 +52,7 @@
 			</div>
 			<h3>
 				Đèn trợ sáng <a href="http://localhost:8080/san-pham/den-tro-sang"><button
-						class="viewAll">Xem tất cả &#187;</button></a>
+						class="viewAll">Xem thêm &#187;</button></a>
 			</h3>
 			<div class="specia-top">
 				<ul class="grid_2" id="denTroSang">
@@ -126,8 +126,8 @@
 			}
 		}
 	
-		initData("#oc", apiUrl.products.byProductType + '?product_type_code=oc&get_random=true&limit=4');
-		initData("#denTroSang", apiUrl.products.byProductType + '?product_type_code=den-tro-sang&get_random=true&limit=4');
+		initData("#oc", apiUrl.products.byProductType + '/oc?get_random=true&limit=4');
+		initData("#denTroSang", apiUrl.products.byProductType + '/den-tro-sang?get_random=true&limit=4');
 		var slideIndex = 0;
 		showSlides();
 		//--------------------------------------------
@@ -168,7 +168,7 @@
 					html += '		<div class="item_add">';
 					html += '			<span class="item_price">';
 					html += '				<p><del>'+(ele.proPrice/1000).toFixed(3)+ ' đ' +'</del></p>';
-					html += '				<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ&#160;(&#45;' + ele.proDiscountRatio + '&#37;)</h4>';
+					html += '				<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ</h4>';
 					html += '			</span>';
 					html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' sản phẩm</p>':'<p>&#160;</p>';
 					html += '		</div>';

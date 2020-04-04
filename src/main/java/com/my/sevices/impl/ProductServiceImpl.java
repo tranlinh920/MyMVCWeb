@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
@@ -34,6 +37,7 @@ import com.my.sevices.impl.StorageServiceImpl.UploadResult;
 
 @Service
 @Transactional
+@CacheConfig(cacheNames = "products")
 public class ProductServiceImpl implements ProductService {
 
 	@Autowired
@@ -59,9 +63,21 @@ public class ProductServiceImpl implements ProductService {
 
 	/** Find products with pagination and sort **/
 	@Override
+	@Cacheable
 	public List<ProductDTO> findAll(Pageable pageable) {
 		List<ProductDTO> dtos = new ArrayList<ProductDTO>();
 		List<ProductEntity> entities = productRepository.findAllByIsActiveTrue(pageable).getContent();
+		entities.forEach(entity -> {
+			dtos.add(productConverter.toDTO(entity));
+		});
+		return dtos;
+	}
+
+	@Override
+	@Cacheable
+	public List<ProductDTO> findAllByProType(Pageable pageable) {
+		List<ProductDTO> dtos = new ArrayList<ProductDTO>();
+		List<ProductEntity> entities = productRepository.findAllByProTypeAndIsActiveTrue(pageable).getContent();
 		entities.forEach(entity -> {
 			dtos.add(productConverter.toDTO(entity));
 		});
@@ -83,6 +99,7 @@ public class ProductServiceImpl implements ProductService {
 
 	/** Find the product that is active **/
 	@Override
+	@Cacheable(key = "#proId")
 	public ProductDTO findOne(Long proId) {
 		ProductEntity entity = productRepository.findByProIdAndIsActive(proId, true);
 		if (entity == null)
@@ -151,8 +168,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ResponseEntity<?> save(ProductUpload pro, String uploadPath) {
-		ProductTypeEntity productType = productTypeRepository.findByProTypeName(pro.getProTypeName());
+	@CacheEvict(allEntries = true)
+	public ProductDTO save(ProductUpload pro, String uploadPath) {
+		ProductTypeEntity productType = productTypeRepository.findOneByProTypeCode(pro.getProTypeCode());
 		ProductEntity entity;
 		if (pro.getProId() == null) {
 			entity = productConverter.toEntity(pro);
@@ -168,12 +186,14 @@ public class ProductServiceImpl implements ProductService {
 		ProductDTO dto = productConverter.toDTO(productRepository.save(entity));
 
 		// upload file
-		UploadResult uploadResult = uploadFile(pro, uploadPath, dto);
+		uploadFile(pro, uploadPath, dto);
 		// delete file at edit product function
 		deleteFile(pro, uploadPath, entity);
 
-		Result<ProductDTO> result = new Result<ProductDTO>(200, dto, uploadResult.getMassage());
-		return new ResponseEntity<>(result, HttpStatus.OK);
+//		Result<ProductDTO> result = new Result<ProductDTO>(200, dto, uploadResult.getMassage());
+//		return new ResponseEntity<>(result, HttpStatus.OK);
+
+		return dto;
 	}
 
 	private UploadResult uploadFile(ProductUpload pro, String uploadPath, ProductDTO dto) {
@@ -210,6 +230,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	@CacheEvict(allEntries = true)
 	public void delete(Long proId) {
 		ProductEntity entity = productRepository.findOne(proId);
 		entity.setActive(false);
@@ -217,12 +238,13 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductDTO> findByProNameContaining(String proName,Pageable pageable) {
+	public List<ProductDTO> findByProNameContaining(String proName, Pageable pageable) {
 		List<ProductDTO> dtos = new ArrayList<ProductDTO>();
-		List<ProductEntity> entities = productRepository.findByProNameContainingIgnoreCase(proName,pageable);
+		List<ProductEntity> entities = productRepository.findByProNameContainingIgnoreCase(proName, pageable);
 		entities.forEach(entity -> {
 			dtos.add(productConverter.toDTO(entity));
 		});
 		return dtos;
 	}
+
 }

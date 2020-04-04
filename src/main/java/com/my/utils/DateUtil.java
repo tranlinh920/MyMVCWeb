@@ -2,10 +2,18 @@ package com.my.utils;
 
 import java.util.Calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.my.entities.AccessStatisticEntity;
+import com.my.services.AccessStatisticService;
 
 @Component
 public class DateUtil {
+
+	@Autowired
+	private AccessStatisticService accessStatisticService;
 
 	public Calendar getCurrentStartDay() {
 		Calendar calendar = Calendar.getInstance();
@@ -98,6 +106,12 @@ public class DateUtil {
 		calendar.set(Calendar.MONTH, Calendar.DECEMBER);
 		calendar.set(Calendar.YEAR, year);
 		return calendar;
+	}
+
+	/** Set access is 0 in new start day **/
+	@Scheduled(cron = "0 0 0 * * *")
+	public void saveAutoCurrentDateToDB() {
+		accessStatisticService.save(new AccessStatisticEntity(Calendar.getInstance(), 0));
 	}
 
 	// ---------------------------------------------

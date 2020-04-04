@@ -22,16 +22,18 @@ public interface ProductService {
 
 	public Long countByProType(String proTypeCode);
 
+	public Long countByProNameContaining(String searchString);
+
 	public ResponseEntity<?> save(ProductDTO dto);
 
-	public ResponseEntity<?> save(ProductUpload pro, String uploadPath);
+	public ProductDTO save(ProductUpload pro, String uploadPath);
 
 	public void delete(Long proId);
 
 	public List<ProductDTO> findByProType(ProductTypeDTO typeDTO, Pageable pageable);
 
-	public Long countByProNameContaining(String searchString);
-
 	public List<ProductDTO> findByProNameContaining(String searchString, Pageable pageable);
+
+	public List<ProductDTO> findAllByProType(Pageable pageable);
 
 }

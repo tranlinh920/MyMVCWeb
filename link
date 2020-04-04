@@ -18,3 +18,19 @@ https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-k
 
 // sai lam jpa
 https://medium.com/vnextlife/spring-data-jpa-hibernate-nh%E1%BB%AFng-sai-l%E1%BA%A7m-r%E1%BA%A5t-d%E1%BB%85-g%E1%BA%B7p-ph%E1%BA%A3i-caef72b18879
+
+Meaning of @Resource annotation  @Resource vs @Autowired
+https://stackoverflow.com/questions/50419330/meaning-of-resource-annotation
+https://stackoverflow.com/questions/4093504/resource-vs-autowired?noredirect=1&lq=1
+
+cache  redis cache ~ spring mvc
+https://www.baeldung.com/spring-data-redis-tutorial
+https://spring.io/guides/gs/caching/
+https://kipalog.com/posts/Hu-o--ng-da--n-Spring-Boot---Redis
+https://thecoderoot.com/tang-cuong-performance-spring-boot-voi-redis-cache.html
+https://dzone.com/articles/integrate-redis-to-your-spring-project
+https://www.devglan.com/spring-boot/spring-boot-redis-cache
+https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#cache-annotations-cacheable
+https://medium.com/@MatthewFTech/spring-boot-cache-with-redis-56026f7da83a
+
+popup

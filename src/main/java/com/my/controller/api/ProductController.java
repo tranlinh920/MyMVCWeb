@@ -78,7 +78,9 @@ public class ProductController {
 	@PostMapping()
 	public ResponseEntity<?> newProduct(@ModelAttribute ProductUpload pro, HttpServletRequest request) {
 		String uploadPath = request.getServletContext().getRealPath("resources/images/products");
-		return productService.save(pro, uploadPath);
+		ProductDTO dto = productService.save(pro, uploadPath);
+		Result<ProductDTO> result = new Result<ProductDTO>(200, dto);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@PostMapping("/{id}")
@@ -86,7 +88,9 @@ public class ProductController {
 			HttpServletRequest request) {
 		String uploadPath = request.getServletContext().getRealPath("resources/images/products");
 		pro.setProId(proId);
-		return productService.save(pro, uploadPath);
+		ProductDTO dto = productService.save(pro, uploadPath);
+		Result<ProductDTO> result = new Result<ProductDTO>(200, dto);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")
@@ -166,17 +170,18 @@ public class ProductController {
 		}
 	}
 
-	@GetMapping("/product-type")
+	// @GetMapping("/product-type/{proTypeId}/product-brand/{proBrandId}")
+	@GetMapping("/product-type/{proTypeCode}")
 	public ResponseEntity<?> getRandomByProductType(//
 			@RequestParam(defaultValue = "1") int page, //
 			@RequestParam(defaultValue = "4") int limit, //
 			@RequestParam(name = "sort_type", required = false) String sortType, //
 			@RequestParam(name = "sort_param", required = false) String sortParam, //
 			@RequestParam(name = "get_random", required = false, defaultValue = "false") boolean randomGetting, //
-			@RequestParam(name = "product_type_code", defaultValue = "oc") String proTypeCode// chọn field để sắp xếp
+			@PathVariable(name = "proTypeCode") String proTypeCode//
 	) {
 		int totalItem = productService.countByProType(proTypeCode).intValue();
-		int visiblePages = 1;
+		int visiblePages = 5;
 
 		if (randomGetting) {
 			int totalPages = (int) Math.ceil((double) totalItem / limit);
@@ -200,7 +205,7 @@ public class ProductController {
 	public ResponseEntity<?> search(//
 			@RequestParam("p") String searchString, //
 			@RequestParam(defaultValue = "1") int page, //
-			@RequestParam(defaultValue = "8") int limit, //
+			@RequestParam(defaultValue = "10") int limit, //
 			@RequestParam(name = "sort_type", required = false) String sortType, //
 			@RequestParam(name = "sort_param", required = false) String sortParam //
 	) {

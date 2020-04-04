@@ -81,7 +81,7 @@
 							<span class="brand">Loại: <a
 								href="http://localhost:8080/san-pham/${product.proType.proTypeCode}">${product.proType.proTypeName }
 							</a><input type="hidden" id="productTypeCode"
-								value="${productType.proTypeCode}"></span>
+								value="${product.proType.proTypeCode}"></span>
 							<c:if test="${not empty product.proBrand}">
 								<br>
 								<span class="brand">Thương hiệu: <a
@@ -198,11 +198,11 @@
 				all: baseUrl + 'products',
 				image: baseUrl + 'resources/images/products/',
 				cart: baseUrl + 'products/add-to-cart/',
-				byProductType: baseUrl +  'products/product-type?product_type_code=' + proTypeCode,
+				byProductType: baseUrl +  'products/product-type/' + proTypeCode,
 			}
 		}
-	
-		getRelatedProducts(apiUrl.products.byProductType + '&get_random=true&limit=3');
+		
+		getRelatedProducts(apiUrl.products.byProductType + '?get_random=true&limit=3');
 		//--------------------------------------------------------------
 		function getRelatedProducts(url) {
 			$.get( url, (res, status) => {

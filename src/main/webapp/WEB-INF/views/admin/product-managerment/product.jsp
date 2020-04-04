@@ -80,7 +80,27 @@
 									<h6 class="m-0 font-weight-bold text-primary">Danh sách
 										sản phẩm</h6>
 								</div>
-								<div class="col col-md-4">
+								<div class="col col-md-4"></div>
+							</div>
+							<div class="row mt-1">
+								<div class="col-12 col-md-7">
+									<label>Loại sản phẩm: </label> <select id="productTypeFilter"
+										onchange="getByProductType()" name="proTypeName">
+										<!-- data is here -->
+									</select>
+								</div>
+								<div class="col-10 col-md-4">
+									<div class="input-group md-form form-sm form-2 pl-0">
+										<input class="form-control my-0 py-1 amber-border" type="text"
+											placeholder="Nhập tên sản phẩm..." aria-label="Search"
+											id="proSearchStr">
+										<button class="btn btn-light input-group-append"
+											onclick="searchProduct()">
+											<i class="fas fa-search text-secondary" aria-hidden="true"></i></span>
+										</button>
+									</div>
+								</div>
+								<div class="col-2 col-md-1">
 									<!-- Button trigger modal -->
 									<button type="button" class="btn btn-success float-right"
 										onClick="openProductAdding()" data-target="#addModal">Thêm</button>
@@ -178,7 +198,7 @@
 							<label for="inputProductType" class="col-sm-2 col-form-label">Loại:</label>
 							<div class="col-sm-2">
 								<select class="form-control" id="inputProductType"
-									name="proTypeName">
+									name="proTypeCode">
 									<!-- data is here -->
 								</select>
 							</div>
@@ -280,7 +300,7 @@
 		let getOrderByDateUrl = baseUrl + 'products?sort_param=createdDate&sort_type=desc&';
 		let imagesUrl =  baseUrl + 'resources/images/';
 	
-		const firstPage = 1;
+		const FIRST_PAGE = 1;
 		let startPage ;
 		let totalPages;
 		let visiblePages;
@@ -288,6 +308,7 @@
 		let data;
 		
 		initProductTypesData();
+		initProductTypesFilterData();
 		initProductsData();
 		setPaginationToGetData(getUrl);
 		setCkeditor();
@@ -303,7 +324,7 @@
 				 success: (res)=>{
 					 html = '';
 					 res.data.forEach(ele => {
-							html += ele.proTypeName === proTypeName ? '<option selected>':'<option>';
+							html += ele.proTypeName === proTypeName ? '<option selected value="'+ele.proTypeCode+'">':'<option value="'+ele.proTypeCode+'">';
 							html += ele.proTypeName;
 							html += '</option>';
 						});		 
@@ -312,8 +333,46 @@
 			
 		}
 		
+		// Khởi tạo dữ liệu bộ lọc kiểu sản phẩm 
+		function initProductTypesFilterData(proTypeName = null){
+			 $.ajax({
+				 url: baseUrl + "product-types",
+				 async: true,
+				 success: (res)=>{
+					 html = '<option value="tat-ca">Tất cả</option>';
+					 res.data.forEach(ele => {
+							html += '<option value="'+ele.proTypeCode+'">';
+							html += ele.proTypeName;
+							html += '</option>';
+						});		 
+					 $('#productTypeFilter').html(html);
+			    }});
+			
+		}
+		
+		// Lấy dữ liệu sản phẩm theo kiểu
+		function getByProductType(){
+			let proTypeCode = $( '#productTypeFilter').val();	
+			if(proTypeCode === 'tat-ca'){
+				initProductsData();
+				$('#pagination-demo').twbsPagination('destroy');
+				setPaginationToGetData(getUrl);
+			}else{
+				let pagUrl = baseUrl + 'products/product-type/'+proTypeCode+'?limit=10&';
+				$.ajax({
+					url: pagUrl + 'page=' + currentPage,
+					async: false,
+					success: (res)=>{
+					setPagingInfo(res);
+					renderHtml(res.data);
+					 $('#pagination-demo').twbsPagination('destroy');
+					 setPaginationToGetData(pagUrl,currentPage);
+				}});	
+			}	
+		}
+		
 		// Khởi tạo dữ liệu sản phẩm (product)
-		function initProductsData(page = firstPage){
+		function initProductsData(page = FIRST_PAGE){
 			$.ajax({
 				url: baseUrl + "products?page=" + page,
 				async: false,
@@ -466,9 +525,9 @@
 			if(proId == null){
 				// post 
 				postUrl = baseUrl + "products"; 
-				getUrl =  getOrderByDateUrl + 'page=' + firstPage;
+				getUrl =  getOrderByDateUrl + 'page=' + FIRST_PAGE;
 				pagUrl = getOrderByDateUrl;
-				page = firstPage;
+				page = FIRST_PAGE;
 			}else{
 				// put
 				postUrl = baseUrl + "products/" + proId; 
@@ -573,6 +632,21 @@
 	            	 alter(err);
 	            });
 			$('#confirmModal').modal('toggle'); 
+		}
+		
+		// Tìm kiếm sản phẩm
+		function searchProduct(){
+			let searchStr = $('#proSearchStr').val();
+			let pagUrl = baseUrl + "products/search?p="+searchStr;
+			$.ajax({
+				url: pagUrl+"&page=" + FIRST_PAGE,
+				async: false,
+				success: (res)=>{
+				setPagingInfo(res);
+				renderHtml(res.data);
+				 $('#pagination-demo').twbsPagination('destroy');
+				 setPaginationToGetData(pagUrl,currentPage);
+			}});	
 		}
 				
 	</script>

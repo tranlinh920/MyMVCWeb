@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import com.my.entities.BillEntity;
 import com.my.models.Result;
 import com.my.paging.PagingComponent;
 import com.my.services.BillService;
+import com.my.services.BillStatusService;
 
 @RestController
 @RequestMapping("/bills")
@@ -28,6 +30,9 @@ public class BillController {
 
 	@Autowired
 	private BillService billService;
+
+	@Autowired
+	private BillStatusService billStatusService;
 
 	@Autowired
 	private BillBo billbo;
@@ -69,10 +74,37 @@ public class BillController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
+	@GetMapping("/status/{bilStaCode}")
+	public ResponseEntity<?> byStatus(//
+			@RequestParam(defaultValue = "1") int page, //
+			@RequestParam(defaultValue = "10") int limit, //
+			@RequestParam(name = "sort_type", required = false) String sortType, //
+			@RequestParam(name = "sort_param", required = false) String sortParam, // chọn field để sắp xếp
+			@PathVariable("bilStaCode") String bilStaCode //
+	) {
+		int totalItem = billService.countByBilStatus(bilStaCode).intValue();
+		int visiblePages = 5;
+		boolean entityExitField = BillEntity.isExitField(sortParam);
+		pagingComponent = pagingComponent.doPagingAndSort(//
+				page, limit, totalItem, visiblePages, sortType, sortParam, entityExitField);
+
+		BillStatusDTO bilStaDto = billStatusService.findByBsCode(bilStaCode);
+		List<BillDTO> dtos = billService.findByBilStatus(bilStaDto, pagingComponent.getPageable());
+		Result<List<BillDTO>> result = new Result<>(200, dtos, pagingComponent.getPaging());
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
 	@PutMapping("/status/{id}")
 	public ResponseEntity<?> updateStatus(@PathVariable("id") Long billId, @RequestBody BillDTO dto) {
 		BillStatusDTO billStatusDto = billService.updateStatus(billId, dto);
 		Result<BillStatusDTO> result = new Result<>(200, billStatusDto);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteProduct(@PathVariable(name = "id") Long proId) {
+		billService.delete(proId);
+		Result<?> result = new Result<>(200, "Delete successful");
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 }

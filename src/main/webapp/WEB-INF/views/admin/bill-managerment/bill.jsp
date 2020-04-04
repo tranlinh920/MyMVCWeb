@@ -80,10 +80,31 @@
 									<h6 class="m-0 font-weight-bold text-primary">Danh sách
 										hóa đơn</h6>
 								</div>
+								<div class="col col-md-4"></div>
+							</div>
+							<div class="row mt-1">
+								<div class="col-12 col-md-8">
+									<label>Trạng thái: </label> <select id="billStatusFilter"
+										onchange="getByBillStatus()" name="">
+										<!-- data is here -->
+									</select> <label>Giá: </label> <select id="billAmountFilter"
+										onchange="getOrderByBillAmount()" name="">
+										<option value="desc">Lớn nhất</option>
+										<option value="asc">Nhỏ nhất</option>
+									</select> <label>Ngày: </label> <select id="billDateFilter"
+										onchange="getOrderByBillDate()" name="">
+										<option value="desc">Mới nhất</option>
+										<option value="asc">Cũ nhất</option>
+									</select>
+								</div>
 								<div class="col col-md-4">
-									<!-- 									Button trigger modal -->
-									<!-- 									<button type="button" class="btn btn-success float-right" -->
-									<!-- 										onClick="openProductAdding()" data-target="#addModal">Thêm</button> -->
+									<div class="input-group md-form form-sm form-2 pl-0">
+										<input class="form-control my-0 py-1 amber-border" type="text"
+											placeholder="Tìm kiếm..." aria-label="Search">
+										<button class="btn btn-light input-group-append"><i class="fas fa-search text-secondary"
+												aria-hidden="true"></i></span>
+										</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -94,9 +115,9 @@
 									cellspacing="0">
 									<thead>
 										<tr>
-											<th>ID</th>
 											<th>Tên khách hàng</th>
 											<th>Loại</th>
+											<th>Số điện thoại</th>
 											<th>Ngày mua</th>
 											<th>Giá trị</th>
 											<th>Trạng thái</th>
@@ -105,9 +126,9 @@
 									</thead>
 									<tfoot>
 										<tr>
-											<th>ID</th>
 											<th>Tên khách hàng</th>
 											<th>Loại</th>
+											<th>Số điện thoại</th>
 											<th>Ngày mua</th>
 											<th>Giá trị</th>
 											<th>Trạng thái</th>
@@ -189,23 +210,96 @@
 		let baseUrl = 'http://localhost:8080/';	
 		apiUrl = {
 			bills: {
-				all: baseUrl + 'bills',
-				status: baseUrl + 'bills/status'
+				all: baseUrl + 'bills?sort_param=createdDate&sort_type=desc',
+				orderByBillAmount:  baseUrl + 'bills?sort_param=bilAmount',
+				orderByBillDate:  baseUrl + 'bills?sort_param=createdDate',
+				status: baseUrl + 'bills/status/'
 			},
 			billStatuses : {
 				all: baseUrl + 'bill-statuses'
-			}
+			},
 		}
 		
 		initBillsData();
+		initBillStatusFilterData();
 		setPaginationToGetData(apiUrl.bills.all);
 
 		// -------------------------------------
+
+		// Khởi tạo dữ liệu bộ lọc trạng thái mua
+		function initBillStatusFilterData(bsName = null){
+			 $.ajax({
+				 url: apiUrl.billStatuses.all,
+				 async: true,
+				 success: (res)=>{
+					 html = '<option value="tat-ca">Tất cả</option>';
+					 res.data.forEach(ele => {
+							html +='<option value="'+ele.bsCode+'">';
+							html += ele.bsName;
+							html += '</option>';
+						});		 
+					 $('#billStatusFilter').html(html);
+			    }});
+			
+		}
+		
+		// Lấy dữ liệu hóa đơn theo trạng thái mua
+		function getByBillStatus(){
+			let statusCode = $( '#billStatusFilter').val();	
+			if(statusCode === 'tat-ca'){
+				initBillsData();
+				$('#pagination-demo').twbsPagination('destroy');
+				setPaginationToGetData(apiUrl.bills.all);
+			}else{
+				let pagUrl = apiUrl.bills.status + statusCode+'?limit=10';
+				$.ajax({
+					url: pagUrl + '&page=' + currentPage,
+					async: false,
+					success: (res)=>{
+					  setPagingInfo(res);
+					  renderHtml(res.data);
+					  $('#pagination-demo').twbsPagination('destroy');
+					  setPaginationToGetData(pagUrl,currentPage);
+				}});	
+			}	
+		}
+		
+		// Lấy dữ liệu được sắp xếp theo giá
+		function getOrderByBillAmount(){
+			let sortType = $( '#billAmountFilter').val();	
+			console.log('da vao: ' + sortType);
+			let pagUrl = apiUrl.bills.orderByBillAmount + '&limit=10&sort_type=' + sortType;
+			$.ajax({
+				url: pagUrl + '&page=' + currentPage,
+				async: false,
+				success: (res)=>{
+				  setPagingInfo(res);
+				  renderHtml(res.data);
+				  $('#pagination-demo').twbsPagination('destroy');
+				  setPaginationToGetData(pagUrl,currentPage);
+			}});	
+		}
+		
+		// Lấy dữ liệu được sắp xếp theo ngay
+		function getOrderByBillDate(){
+			let sortType = $( '#billDateFilter').val();	
+			console.log( apiUrl.bills.orderByBillDate + '&limit=10&sort_type=' + sortType);
+			let pagUrl = apiUrl.bills.orderByBillDate + '&limit=10&sort_type=' + sortType;
+			$.ajax({
+				url: pagUrl + '&page=' + currentPage,
+				async: false,
+				success: (res)=>{
+				  setPagingInfo(res);
+				  renderHtml(res.data);
+				  $('#pagination-demo').twbsPagination('destroy');
+				  setPaginationToGetData(pagUrl,currentPage);
+			}});	
+		}
 		
 		// Khởi tạo dữ liệu sản phẩm (product)
 		function initBillsData(page = FIRST_PAGE){
 			$.ajax({
-				url: apiUrl.bills.all + "?page=" + page,
+				url: apiUrl.bills.all + "&page=" + page,
 				async: false,
 				success: (res)=>{
 				  bills = res.data;
@@ -224,7 +318,7 @@
 						initiateStartPageClick:false,
 						onPageClick : (event, page) => {
 							currentPage = page;
-							$.get( url + 'page='+page,
+							$.get( url + '&page='+page,
 									(res, status) => {
 										setPagingInfo(res);
 										renderHtml(res.data);
@@ -246,9 +340,9 @@
 			let html = "";
 			data.forEach(ele => { 
 				html += '<tr>';
-				html += '<td>'+ele.bilId+'</td>';
 				html += '<td>'+(ele.bilUser != undefined ? ele.bilUser.userFullName:ele.bilCus.cusFullName)+'</td>';
 				html += '<td>'+(ele.bilUser != undefined ? "Thành viên":"Khách")+'</td>';
+				html += '<td>'+(ele.bilUser != undefined ? ele.bilUser.userPhoneNumber:ele.bilCus.cusPhoneNumber)+'</td>';
 				if(ele.createdDate != null){
 					html += '<td>'+ele.createdDate.dayOfMonth + "/";
 					html += ele.createdDate.month + 1 + "/";
@@ -264,7 +358,7 @@
 				html += '<td><span class="justify-content-between">';	
 				html += '<a name="action" href="#" onclick="viewBill('+ele.bilId+')"><i class="ml-1 fa fa-eye text-success"></i></a>';
 				html += '<a name="action" href="#" onclick="initBillStatusData('+ele.bilId+','+ele.bilStatus.bsId+')"><i class="fa fa-pencil-square-o .text-primary ml-1"></i></a>';	
-				html += '<a name="action" style="color:red" href="#" onclick="openProductDelete('+ele.proId+')"><i class="ml-1 fa fa-trash-o"></i></a>';
+				html += '<a name="action" style="color:red" href="#" onclick="openBillDelete('+ele.bilId+')"><i class="ml-1 fa fa-trash-o"></i></a>';
 				html += '</span></td>';
 				html += '</tr>';
 			});
@@ -341,7 +435,12 @@
 			html += '<p>_________</p>';
 			html += '<p>TỔNG: <strong> '+bill.bilAmount+' đ</strong></p>';
 			html += '<p>----------------------------</p>';
-			html += '<p>Địa chỉ: <strong>'+'abvc'+'</strong></p>';
+			if(bill.bilUser != undefined){
+				html += '<p>Địa chỉ: <strong>'+bill.bilUser.userAddress+'</strong></p>';
+			}
+			if(bill.bilCus != undefined){
+				html += '<p>Địa chỉ: <strong>'+bill.bilCus.cusAddress+'</strong></p>';
+			}
 			$('#billDetailsModalBody').html(html);
 			$('#billDetailsModal').modal();
 		}
@@ -371,6 +470,26 @@
 			return html;
 		}
 		
+		// Mở modal xóa hóa đơn
+		function openBillDelete(bilId){
+			$('#confirmModal').modal('show'); 
+			$('#confirmSubmit').attr('onClick','deleteBill('+bilId+')');
+		}
+		
+		// Xóa hóa đơn
+		function deleteBill(bilId){
+			console.log('da vao: '+ bilId);
+			delUrl = baseUrl + 'bills/' + bilId;
+		    $.ajax({ url: delUrl, method: "DELETE" })
+	            .then((data) => {
+	            	initBillsData(currentPage);
+	            })
+	            .catch((err) => {
+	            	 alter(err);
+	            });
+			$('#confirmModal').modal('toggle'); 
+		}
+		
 		function copyBillContentToClipboard() {
 			 /* Get the text field */
 			  let copyText = $("#billDetailsModalBody").html(); 
@@ -385,6 +504,8 @@
 			  document.execCommand('copy');
 			  document.body.removeChild(el);
 		}
+		
+		
 				
 	</script>
 

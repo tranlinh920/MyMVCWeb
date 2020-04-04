@@ -13,6 +13,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
 	public Page<ProductEntity> findAllByIsActiveTrue(Pageable pageable);
 
+	public Page<ProductEntity> findAllByProTypeAndIsActiveTrue(Pageable pageable);
+
 	public ProductEntity findByProIdAndIsActive(Long id, boolean active);
 
 	public Long countByIsActiveTrue();
@@ -22,6 +24,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 	public Page<ProductEntity> findByProTypeAndIsActiveTrue(ProductTypeEntity entity, Pageable pageable);
 
 	public Long countByProNameContainingIgnoreCase(String proName);
+
+//	public Long countByProNameContainingOrProPriceContainingIgnoreCase(String str1, String str2); // bị lỗi
 
 	public List<ProductEntity> findByProNameContainingIgnoreCase(String proName, Pageable pageable);
 

@@ -75,10 +75,22 @@ public class BillServiceImpl implements BillService {
 
 	}
 
+	@Override
 	public BillDTO findOne(Long bilId) {
 		BillEntity entity = billRepository.findOne(bilId);
 		BillDTO dto = billconverter.toDTO(entity);
 		return dto;
+	}
+
+	@Override
+	public List<BillDTO> findByBilStatus(BillStatusDTO bilStaDto, Pageable pageable) {
+		List<BillDTO> dtos = new ArrayList<BillDTO>();
+		List<BillEntity> entities = billRepository.findAllByBilStatusAndIsActiveTrue(//
+				billStatusConverter.toEntity(bilStaDto), pageable).getContent();
+		entities.forEach(entity -> {
+			dtos.add(billconverter.toDTO(entity));
+		});
+		return dtos;
 	}
 
 	@Override
@@ -119,7 +131,8 @@ public class BillServiceImpl implements BillService {
 
 		// lưu thông tin sản phẩm trong hóa đơn
 		ProductBillDTO dtoEle;
-		for (ProductBillEntity ele : billEntity.getBilProducts()) {;
+		for (ProductBillEntity ele : billEntity.getBilProducts()) {
+			;
 			ele.setPbBill(new BillEntity(billEntity.getBilId()));
 			dtoEle = productBillConverter.toDTO(ele);
 			pbService.save(dtoEle);
@@ -157,12 +170,25 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
+	public Long countByBilStatus(String bilStaCode) {
+		BillStatusEnitity entity = billStatusRepository.findByBsCode(bilStaCode);
+		return billRepository.countByBilStatusAndIsActiveTrue(entity);
+	}
+
+	@Override
 	public BillStatusDTO updateStatus(Long billId, BillDTO dto) {
 		BillStatusEnitity bsCode = billStatusRepository.findByBsCode(dto.getBilStatus().getBsCode());
 		BillEntity entity = billRepository.findOne(billId);
 		entity.setBilStatus(bsCode);
 		entity.setModifiedDate(Calendar.getInstance());
 		return billStatusConverter.toDTO(entity.getBilStatus());
+	}
+
+	@Override
+	public void delete(Long proId) {
+		BillEntity entity = billRepository.findOne(proId);
+		entity.setActive(false);
+		billRepository.save(entity);
 	}
 
 }

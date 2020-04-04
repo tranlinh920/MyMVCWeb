@@ -8,7 +8,7 @@ import lombok.Data;
 public class ProductUpload {
 	private Long proId;
 	private String proName;
-	private String proTypeName;
+	private String proTypeCode;
 	private String proBrandName;
 	private String proOriginname;
 	private int proPrice;

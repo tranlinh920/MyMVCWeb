@@ -18,6 +18,34 @@
 
 <!-- Header declare -->
 <%@ include file="/WEB-INF/views/admin/common/_header-declare.jsp"%>
+
+<style>
+.my-custom-scrollbar {
+	position: relative;
+	height: 300px;
+	overflow: auto;
+}
+
+.my-table-wrapper-scroll-y {
+	display: block;
+}
+
+.my-vertical-menu {
+	background-color: #eee;
+	border-top-style: solid;
+	height: 70px;
+	overflow-y: auto;
+}
+
+.my-vertical-menu a {
+	background-color: #eee;
+	color: black;
+	display: block;
+	padding: 12px;
+	text-decoration: none;
+}
+</style>
+
 </head>
 
 <body id="page-top">
@@ -275,7 +303,7 @@
 							<div class="row">
 								<div class="col-12 col-md-8">
 									<h6 class="m-0 font-weight-bold text-primary">Danh sách
-										hóa đơn</h6>
+										truy cập</h6>
 								</div>
 								<div class="col col-md-4">
 									<!-- 									Button trigger modal -->
@@ -291,19 +319,19 @@
 									cellspacing="0">
 									<thead>
 										<tr>
-											<th>ID</th>
 											<th>Ngày</th>
 											<th>Lượt truy cập</th>
+											<th>Hành động</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
-											<th>ID</th>
 											<th>Ngày</th>
 											<th>Lượt truy cập</th>
+											<th>Hành động</th>
 										</tr>
 									</tfoot>
-									<tbody id="AccessTableBody">
+									<tbody id="accessTableBody">
 										<!-- render at here -->
 									</tbody>
 								</table>
@@ -496,6 +524,9 @@
 	<!-- Footer declare -->
 	<%@ include file="/WEB-INF/views/admin/common/_footer-declare.jsp"%>
 
+	<!-- common modal declare -->
+	<%@ include file="/WEB-INF/views/admin/common/_modal.jsp"%>
+
 	<script
 		src="${pageContext.request.contextPath}/resources/plugin/canvasjs/canvasjs.min.js"></script>
 	<script
@@ -503,10 +534,27 @@
 
 	<script>
 	
+		const FIRST_PAGE = 1;
+		let startPage ;
+		let totalPages;
+		let visiblePages;
+		let currentPage = 1;// default
+		let accessStatistics = [];
+	
 		let baseUrl = 'http://localhost:8080/';		
+		
+		apiUrl = {
+				accessStatistis: {
+					all: baseUrl + 'access-statistics?sort_param=asDate&sort_type=desc',
+					customize: baseUrl + 'access-statistics?get_by=customize',
+					allMonth: baseUrl + 'access-statistics?get_by=all-month',
+				},
+			}
 
 		getAccessStatistic();
 		drawMonthAccessChart();
+		initAccessData();
+		setPaginationToGetData(apiUrl.accessStatistis.all);
 		//------------------------------------------------------
 		
 		function getAccessStatistic(){
@@ -515,7 +563,7 @@
 			let year = $( '#year option:selected' ).text();
 			
 			$.ajax({
-				 url: baseUrl + 'access-statistics?get_by=customize&day='+date+'&month='+month+'&year='+year,
+				 url: apiUrl.accessStatistis.customize + '&day='+date+'&month='+month+'&year='+year,
 				 async: false,
 				 success: (res)=>{
 					 if(res.data[0] != null){
@@ -540,9 +588,6 @@
 		
 		// tạo biểu đồ từ dữ liệu thu được
 		function drawMonthAccessChart(){
-			
-			console.log(getMonthAccessData());
-			
 			var options = {
 					animationEnabled: true,  
 					title:{
@@ -572,7 +617,7 @@
 			let monthsData = [];
 			let year = $( '#yearOfMonthChart option:selected' ).text();	
 			$.ajax({
-				 url: baseUrl + 'access-statistics?get_by=all-month&year='+year,
+				 url: apiUrl.accessStatistis.allMonth + '&year='+year,
 				 async: false,
 				 success: (res)=>{
 					 if(res.data[0] != null){
@@ -592,6 +637,67 @@
 			 return monthsData;
 		}
 		
+		// Khởi tạo dữ liệu thống kê
+		function initAccessData(page = FIRST_PAGE){
+			console.log(apiUrl.accessStatistis.all + "&page=" + page);
+			$.ajax({
+				url: apiUrl.accessStatistis.all + "&page=" + page,
+				async: false,
+				success: (res)=>{
+				  accessStatistics = res.data;
+				  setPagingInfo(res);
+				  renderHtml(res.data);
+			}});	
+		}
+		
+		//Tạo chức năng phân trang cho dữ liệu
+		function setPaginationToGetData(url, page = startPage){
+			$('#pagination-demo').twbsPagination(
+					{
+						totalPages:totalPages,
+						visiblePages:visiblePages,
+						startPage :page,
+						initiateStartPageClick:false,
+						onPageClick : (event, page) => {
+							currentPage = page;
+							$.get( url + '&page='+page,
+									(res, status) => {
+										setPagingInfo(res);
+										renderHtml(res.data);
+									}
+							);
+						}
+			});
+		}
+		
+		// Tạo thông tin để phân trang
+		function setPagingInfo(res){
+			totalPages = res.paging.totalPages;
+			visiblePages = res.paging.visiblePages;
+			startPage = res.paging.page;
+		}
+		
+		// Tạo bảng từ dữ liệu sản phẩm
+		function renderHtml(data){
+			let html = "";
+			data.forEach(ele => { 
+				html += '<tr>';
+				if(ele.asDate != null){
+					html += '<td>'+ele.asDate.dayOfMonth + "/";
+					html += ele.asDate.month + 1 + "/";
+					html += ele.asDate.year + " ";
+					html += '</td>';
+				}else{
+					html += '<td></td>';		
+				}		
+ 				html += '<td>'+ ele.asTime +'</td>';
+				html += '<td><span class="justify-content-between">';	
+				html += '<a name="action" style="color:red" href="" onclick="openAccessDelete('+ele.proId+')"><i class="ml-1 fa fa-trash-o"></i></a>';
+				html += '</span></td>';
+				html += '</tr>';
+			});
+ 			$('#accessTableBody').html(html);
+		}
 		
 	</script>
 
