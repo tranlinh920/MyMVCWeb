@@ -1,51 +1,45 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <div class="footer">
 	<div class="container">
 		<div class="col-md-3 cust">
-			<h4>CUSTOMER CARE</h4>
-			<li><a href="#">Help Center</a></li>
-			<li><a href="#">FAQ</a></li>
-			<li><a href="buy.html">How To Buy</a></li>
-			<li><a href="#">Delivery</a></li>
+			<div id="facebook-iframe">
+				<iframe
+					src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FWarComissar%2F&tabs=timeline&width=250&height=140&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+					width="250" height="140" style="border: none; overflow: hidden"
+					scrolling="no" frameborder="0" allowTransparency="true"
+					allow="encrypted-media"></iframe>
+			</div>
 		</div>
-		<div class="col-md-2 abt">
-			<h4>ABOUT US</h4>
-			<li><a href="#">Our Stories</a></li>
-			<li><a href="#">Press</a></li>
-			<li><a href="#">Career</a></li>
-			<li><a href="contact.html">Contact</a></li>
+		<div class="col-md-3 abt">
+			<h4>CHĂM SÓC KHÁCH HÀNG</h4>
+			<li><a href="#">Hướng dẫn mua hàng</a></li>
+			<li><a href="#">Phương thức vận chuyển</a></li>
+			<li><a href="buy.html">Chính sách đổi trả</a></li>
 		</div>
 		<div class="col-md-2 myac">
-			<h4>MY ACCOUNT</h4>
-			<li><a href="register.html">Register</a></li>
-			<li><a href="#">My Cart</a></li>
-			<li><a href="#">Order History</a></li>
-			<li><a href="buy.html">Payment</a></li>
+			<h4>TÀI KHOẢN</h4>
+			<li><a href="register.html">Đăng nhập Facebook</a></li>
 		</div>
-		<div class="col-md-5 our-st">
-			<div class="our-left">
-				<h4>OUR STORES</h4>
-			</div>
-			<div class="our-left1">
-				<div class="cr_btn">
-					<a href="#">SOLO</a>
-				</div>
-			</div>
-			<div class="our-left1">
-				<div class="cr_btn1">
-					<a href="#">BOGOR</a>
-				</div>
+		<div class="col-md-4 our-st">
+			<div class="">
+				<h4>SHOP CHÚNG TÔI</h4>
 			</div>
 			<div class="clearfix"></div>
-			<li><i class="add"> </i>Jl. Haji Muhidin, Blok G no.69</li>
-			<li><i class="phone"> </i>025-2839341</li>
-			<li><a href="mailto:info@example.com"><i class="mail"> </i>info@sitename.com
-			</a></li>
+			<ul>
+				<li><i class="add"> </i>Phước Bình Phước Long Bình Phước</li>
+				<li><i class="phone"> </i>025-2839341</li>
+				<li><a href="mailto:info@example.com"><i class="mail">
+					</i>futuxe@sitename.com </a></li>
+			</ul>
 
 		</div>
 		<div class="clearfix"></div>
-		<p>
-			Copyrights � 2015 Gretong. All rights reserved | Template by <a
-				href="http://w3layouts.com/">W3layouts</a>
-		</p>
+		<!-- 		<p> -->
+		<!-- 			Copyrights All rights reserved  -->
+		<!-- 		</p> -->
 	</div>
 </div>

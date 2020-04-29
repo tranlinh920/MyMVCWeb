@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 
 <!-- Header declare -->
 <%@ include file="/WEB-INF/views/home/common/_header-declare.jsp"%>
@@ -44,16 +43,13 @@
 						<div class="grid1_of_4">
 							<div class="border">
 								<div class="content_box">
-									<a
-										href="http://localhost:8080/chi-tiet-san-pham/${product.proId}">
-										<img
-										src="http://localhost:8080/resources/images/products/${product.proImages[0].proImageName}"
+									<a href="${baseUrl}chi-tiet-san-pham/${product.proId}"> <img
+										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" alt="">
 									</a>
 								</div>
 								<h5>
-									<a
-										href="http://localhost:8080/chi-tiet-san-pham/${product.proId}">${product.proName}</a>
+									<a href="${baseUrl}chi-tiet-san-pham/${product.proId}">${product.proName}</a>
 								</h5>
 								<c:if test="${!product.proIsDiscount}">
 									<div class="item_add">
@@ -97,8 +93,7 @@
 									</div>
 								</c:if>
 								<c:if test="${product.proAmount < 3}">
-									<p style="color: green">Chỉ còn ${product.proAmount} sản
-										phẩm</p>
+									<p style="color: green">Chỉ còn ${product.proAmount} SP</p>
 								</c:if>
 								<c:if test="${product.proAmount > 2}">
 									<p>&#160;</p>
@@ -137,7 +132,7 @@
 			<div class="col-md-6 s-c">
 				<li>
 					<div class="fooll">
-						<h5>follow us on</h5>
+						<h5>Theo dõi chúng tôi: </h5>
 					</div>
 				</li>
 				<li>
@@ -161,13 +156,13 @@
 					<div class="stay-left">
 						<form>
 							<input type="text"
-								placeholder="Enter your email to join our newsletter"
+								placeholder="Nhập email để nhân thông báo mới"
 								required="">
 						</form>
 					</div>
 					<div class="btn-1">
 						<form>
-							<input type="submit" value="join">
+							<input type="submit" value="Tham gia">
 						</form>
 					</div>
 					<div class="clearfix"></div>
@@ -183,6 +178,9 @@
 	<!-- Footer declare -->
 	<%@ include file="/WEB-INF/views/home/common/_footer-declare.jsp"%>
 
+	<!-- common javascript -->
+	<%@ include file="/WEB-INF/views/_common-javascript.jsp"%>
+
 	<script>
 		const firstPage = 1;
 		let startPage;
@@ -193,7 +191,6 @@
 		
 		let proTypeCode = $('#productTypeCode').val();
 			
-		let baseUrl = 'http://localhost:8080/';
 		apiUrl = {
 			products: {
 				all: baseUrl + 'products?limit='+limit,
@@ -226,11 +223,11 @@
 			data.forEach(ele => { 
 				html += '<div class="grid1_of_4">';
 				html += '	<div class="border">';
-				html += '		<div class="content_box"><a href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">';
+				html += '		<div class="content_box"><a href="'+baseUrl+'chi-tiet-san-pham/'+ele.proId+'">';
 				html += '			<img src="'+apiUrl.products.image + ele.proImages[0].proImageName +'" class="img-responsive" alt="loading..." />';
 				html += '			</a>';
 				html += '		</div>';
-				html += '		<h5><a href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">'+ele.proName+'</a></h5>';
+				html += '		<h5><a href="'+baseUrl+'chi-tiet-san-pham/'+ele.proId+'">'+ele.proName+'</a></h5>';
 				if(!ele.proIsDiscount){
 					html += '		<div class="item_add"><span class="item_price">';
 					html += '			<p>&#160;</p>';
@@ -247,8 +244,8 @@
 					html += '			<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ</h4>';
 					html += '		</span></div>';
 				}	
-				html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' sản phẩm</p>':'<p>&#160;</p>';
-				html += '		<div class="item_add"><span class="item_price"><a href="#">Thêm vào giỏ</a></span></div>';
+				html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' SP</p>':'<p>&#160;</p>';
+				html += '		<div class="item_add"><span class="item_price"><a href="#" onClick="addToCart('+ele.proId+')">Thêm vào giỏ</a></span></div>';
 				html += '	</div>';
 				html += '</div>';
 				

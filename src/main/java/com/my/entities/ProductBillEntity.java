@@ -24,11 +24,11 @@ public class ProductBillEntity extends BaseEntity {
 	@Column(name = "pb_id", columnDefinition = "bigint")
 	private Long pbId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pro_id", nullable = false, columnDefinition = "bigint")
 	private ProductEntity pbProduct;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "bil_id", nullable = false, columnDefinition = "bigint")
 	private BillEntity pbBill;
 	

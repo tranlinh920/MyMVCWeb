@@ -20,8 +20,18 @@ public class AdminController {
 	}
 
 	@GetMapping("/admin/thong-ke-luot-truy-cap")
-	public ModelAndView getDashboardPage() {
+	public ModelAndView getAccessStatisticsPage() {
 		ModelAndView mav = new ModelAndView("admin/dashboard/access-statistic");
+		Calendar calendar = Calendar.getInstance();
+		mav.addObject("currentDate", calendar.get(Calendar.DATE));
+		mav.addObject("currentMonth", calendar.get(Calendar.MONTH));
+		mav.addObject("currentYear", calendar.get(Calendar.YEAR));
+		return mav;
+	}
+
+	@GetMapping("/admin/thong-ke-san-pham")
+	public ModelAndView getProductStatisticsPage() {
+		ModelAndView mav = new ModelAndView("admin/dashboard/product-statistic");
 		Calendar calendar = Calendar.getInstance();
 		mav.addObject("currentDate", calendar.get(Calendar.DATE));
 		mav.addObject("currentMonth", calendar.get(Calendar.MONTH));

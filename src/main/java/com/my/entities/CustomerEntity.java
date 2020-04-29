@@ -33,7 +33,7 @@ public class CustomerEntity extends BaseEntity {
 	private String cusEmail;
 
 	@Column(name = "cusPhoneNumber", nullable = false, columnDefinition = "bigint")
-	private Long cusPhoneNumber;
+	private String cusPhoneNumber;
 
 	// @Column(name = "cusAddress", nullable = false, columnDefinition =
 	// "nvarchar(max)") // for sqlserver

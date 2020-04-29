@@ -27,7 +27,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 
 //	public Long countByProNameContainingOrProPriceContainingIgnoreCase(String str1, String str2); // bị lỗi
 
-	public List<ProductEntity> findByProNameContainingIgnoreCase(String proName, Pageable pageable);
+	public List<ProductEntity> findByProNameContainingIgnoreCaseAndIsActiveTrue(String proName, Pageable pageable);
+	
 
 //	@Query(value = "SELECT P.* FROM PRODUCTS P " + //
 //			"JOIN PRODUCTTYPE PT ON P.PRO_ID = PT.PRO_ID " + //

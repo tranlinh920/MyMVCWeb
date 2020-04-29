@@ -25,4 +25,8 @@ public interface BillService {
 
 	public List<BillDTO> findByBilStatus(BillStatusDTO bilStaDto, Pageable pageable);
 
+	public Long countByCusAndUserContaining(String searchString);
+
+	public List<BillDTO> findByCusAndUserContaining(String searchString, Pageable pageable);
+
 }

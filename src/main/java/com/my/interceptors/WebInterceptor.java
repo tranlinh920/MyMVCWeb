@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.my.contant.SystemContant;
 import com.my.dto.UserDTO;
 import com.my.entities.AccessStatisticEntity;
 import com.my.models.Category;
@@ -32,6 +33,11 @@ public class WebInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+
+		// Khởi tạo baseurl
+		if (request.getAttribute("baseUrl") == null) {
+			request.setAttribute("baseUrl", SystemContant.BASE_URL);
+		}
 
 		// Khởi tạo navigation menu
 		if (request.getAttribute("navs") == null) {

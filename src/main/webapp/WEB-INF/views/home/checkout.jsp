@@ -2,11 +2,11 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 
 <!-- Header declare -->
 <%@ include file="/WEB-INF/views/home/common/_header-declare.jsp"%>
@@ -26,11 +26,11 @@
 						<input type="hidden" name="product" value="${product}">
 						<div class="cart-header" id="cart-header${product.proId}">
 							<div class="close1" onClick="removeFromCart(${product.proId})"
-								style="background-image: url('http://localhost:8080/resources/home/img/close_1.png');"></div>
+								style="background-image: url('${baseUrl}resources/home/img/close_1.png');"></div>
 							<div class="cart-sec simpleCart_shelfItem">
 								<div class="cart-item cyc">
 									<img
-										src="http://localhost:8080/resources/images/products/${product.proImages[0].proImageName}"
+										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" alt="" />
 								</div>
 								<div class="cart-item-info">
@@ -133,6 +133,10 @@
 						<c:when test="${not empty user}">
 							<form method="post" action="contact-post.html">
 								<div>
+									<p style="color: green">*Quý khách vui lòng kiểm tra lại
+										thông tin bên dưới.</p>
+								</div>
+								<div>
 									<span><label>Họ và tên (*)</label></span> <span><input
 										name="fullName" id="cusFullName" type="text"
 										value="${user.userFullName}" required></span> <span
@@ -202,14 +206,14 @@
 			<div class="col-md-6 s-c">
 				<li>
 					<div class="fooll">
-						<h5>follow us on</h5>
+						<h5>Theo dõi chúng tôi:</h5>
 					</div>
 				</li>
 				<li>
 					<div class="social-ic">
 						<ul>
 							<li><a href="#"><i class="facebok"
-									style="background-image: url('${pageContext.request.contextPath}/resources/home/img/img-sprite.png');">
+									style="background-image: url('${baseUrl}/resources/home/img/img-sprite.png');">
 								</i></a></li>
 							<li><a href="#"><i class="twiter"> </i></a></li>
 							<li><a href="#"><i class="goog"> </i></a></li>
@@ -226,13 +230,13 @@
 					<div class="stay-left">
 						<form>
 							<input type="text"
-								placeholder="Enter your email to join our newsletter"
+								placeholder="Nhập email để nhân thông báo mới"
 								required="">
 						</form>
 					</div>
 					<div class="btn-1">
 						<form>
-							<input type="submit" value="join">
+							<input type="submit" value="Tham gia">
 						</form>
 					</div>
 					<div class="clearfix"></div>
@@ -247,11 +251,11 @@
 	<%@ include file="/WEB-INF/views/home/common/_footer-declare.jsp"%>
 	<%@ include file="/WEB-INF/views/home/common/_modal.jsp"%>
 
-
+	<!-- common javascript -->
+	<%@ include file="/WEB-INF/views/_common-javascript.jsp"%>
 
 	<script>
 		let limit = 8;
-		let baseUrl = 'http://localhost:8080/';
 		let products = ${productsJson};
 		let bilProducts = [];
 		apiUrl = {

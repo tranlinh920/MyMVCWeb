@@ -6,25 +6,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.my.converter.UserConverter;
 import com.my.dto.ProductDTO;
 import com.my.dto.ProductTypeDTO;
+import com.my.dto.UserDTO;
 import com.my.entities.ProductEntity;
 import com.my.exception.RecordNotFoundException;
 import com.my.paging.PagingComponent;
 import com.my.services.ProductService;
 import com.my.services.ProductTypeService;
+import com.my.services.UserService;
+import com.my.utils.RestFacebookUtil;
+import com.my.utils.SecurityUtil;
 
 @Controller
 public class HomeController {
@@ -37,6 +48,18 @@ public class HomeController {
 
 	@Autowired
 	private PagingComponent pagingComponent;
+
+	@Autowired
+	private RestFacebookUtil restFB;
+
+	@Autowired
+	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserConverter userConverter;
 
 	@GetMapping(value = { "/", "/trang-chu" })
 	public String getHomePage(Model model, HttpSession session) {
@@ -142,6 +165,42 @@ public class HomeController {
 		model.addAttribute("products", products);
 		model.addAttribute("paging", pagingComponent.getPaging());
 		return "home/search";
+	}
+
+	@GetMapping("/dang-nhap-bang-facebook")
+	public String loginFacebook(HttpServletRequest request) {
+		com.restfb.types.User user = null;
+		UserDetails userDetail;
+		try {
+			String code = request.getParameter("code");
+			String accessToken = "";
+			accessToken = restFB.getToken(code); // if get failure throw IOException
+			user = restFB.getUserInfo(accessToken);
+			userDetail = userDetailsService.loadUserByUsername(user.getId());
+		} catch (IOException e) {
+			return "login?facebook=error";
+		} catch (Exception e) {
+			// create new user
+			userService.save(userConverter.toDTO(user));
+			userDetail = restFB.buildUser(user);
+		}
+
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail, null,
+				userDetail.getAuthorities());
+		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		// Cập nhật user model
+		UserDTO userDto = userService.findByUserName(SecurityUtil.getUserDetails().getUsername());
+		request.getSession().setAttribute("user", userDto);
+
+		return "home/home";
+//		try {
+//			accessToken = restFB.getToken(code);
+//		} catch (IOException e) {
+//			return "login?facebook=error";
+//		}
+
 	}
 
 }

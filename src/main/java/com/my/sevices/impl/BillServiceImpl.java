@@ -132,7 +132,6 @@ public class BillServiceImpl implements BillService {
 		// lưu thông tin sản phẩm trong hóa đơn
 		ProductBillDTO dtoEle;
 		for (ProductBillEntity ele : billEntity.getBilProducts()) {
-			;
 			ele.setPbBill(new BillEntity(billEntity.getBilId()));
 			dtoEle = productBillConverter.toDTO(ele);
 			pbService.save(dtoEle);
@@ -147,7 +146,7 @@ public class BillServiceImpl implements BillService {
 			return true;
 		if (!userDto.getUserEmail().equals(billDto.getBilCus().getCusEmail()))
 			return true;
-		if (userDto.getUserPhoneNumber() != billDto.getBilCus().getCusPhoneNumber())
+		if (!userDto.getUserPhoneNumber().equals(billDto.getBilCus().getCusPhoneNumber()))
 			return true;
 		if (!userDto.getUserAddress().equals(billDto.getBilCus().getCusAddress()))
 			return true;
@@ -189,6 +188,22 @@ public class BillServiceImpl implements BillService {
 		BillEntity entity = billRepository.findOne(proId);
 		entity.setActive(false);
 		billRepository.save(entity);
+	}
+
+	@Override
+	public Long countByCusAndUserContaining(String searchString) {
+		return billRepository.countByCusAndUserContainingAndIsActive(searchString, true);
+	}
+
+	@Override
+	public List<BillDTO> findByCusAndUserContaining(String searchString, Pageable pageable) {
+		List<BillDTO> dtos = new ArrayList<BillDTO>();
+		List<BillEntity> entities = //
+				billRepository.findByCusAndUserContainingAndIsActive(searchString, true, pageable).getContent();
+		entities.forEach(entity -> {
+			dtos.add(billconverter.toDTO(entity));
+		});
+		return dtos;
 	}
 
 }

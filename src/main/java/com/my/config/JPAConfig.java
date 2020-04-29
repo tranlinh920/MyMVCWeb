@@ -71,12 +71,13 @@ public class JPAConfig {
 //	public DataSource dataSource() {
 //		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 //		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//		dataSource.setUrl("jdbc:mysql://node221542-futuxe.enscaled.sg/mymvcweb");
+//		dataSource.setUrl("jdbc:mysql://node223314-futuxes.enscaled.sg/mymvcweb");
 //		dataSource.setUsername("root");
-//		dataSource.setPassword("rr3zrIQ388");
+//		dataSource.setPassword("SYSkgi35125");
 //		return dataSource;
 //	}
 
+//	CHÚ Ý !!!!!!!!!!!!!!!!!!!!!!
 	Properties additionalProperties() {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.hbm2ddl.auto", "none");

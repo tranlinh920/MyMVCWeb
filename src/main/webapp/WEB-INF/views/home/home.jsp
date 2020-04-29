@@ -6,34 +6,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 
 <!-- Header declare -->
 <%@ include file="/WEB-INF/views/home/common/_header-declare.jsp"%>
+
 </head>
 <body>
 
 	<!-- Header -->
 	<%@ include file="/WEB-INF/views/home/common/_header.jsp"%>
 
-	<div>
+	<div style="padding: 20px">
 		<div class="slideshow-container">
 
 			<div class="mySlides fade">
-				<img
-					src="${pageContext.request.contextPath}/resources/home/img/img_nature_wide.jpg"
+				<img src="${baseUrl}resources/home/img/img_nature_wide.jpg"
 					style="width: 100%">
 			</div>
 
 			<div class="mySlides fade">
-				<img
-					src="${pageContext.request.contextPath}/resources/home/img/img_snow_wide.jpg"
+				<img src="${baseUrl}resources/home/img/img_snow_wide.jpg"
 					style="width: 100%">
 			</div>
 
 			<div class="mySlides fade">
-				<img
-					src="${pageContext.request.contextPath}/resources/home/img/img_mountains_wide.jpg"
+				<img src="${baseUrl}resources/home/img/img_mountains_wide.jpg"
 					style="width: 100%">
 			</div>
 		</div>
@@ -42,8 +39,8 @@
 	<div class="special">
 		<div class="container">
 			<h3>
-				Ốc <a href="http://localhost:8080/san-pham/oc"><button
-						class="viewAll">Xem thêm &#187;</button></a>
+				Ốc <a href="${baseUrl}san-pham/oc"><button class="viewAll">Xem
+						thêm &#187;</button></a>
 			</h3>
 			<div class="specia-top">
 				<ul class="grid_2" id="oc">
@@ -51,7 +48,7 @@
 				</ul>
 			</div>
 			<h3>
-				Đèn trợ sáng <a href="http://localhost:8080/san-pham/den-tro-sang"><button
+				Đèn trợ sáng <a href="${baseUrl}san-pham/den-tro-sang"><button
 						class="viewAll">Xem thêm &#187;</button></a>
 			</h3>
 			<div class="specia-top">
@@ -66,14 +63,14 @@
 			<div class="col-md-6 s-c">
 				<li>
 					<div class="fooll">
-						<h5>follow us on</h5>
+						<h5>Theo dõi chúng tôi:</h5>
 					</div>
 				</li>
 				<li>
 					<div class="social-ic">
 						<ul>
 							<li><a href="#"><i class="facebok"
-									style="background-image: url('${pageContext.request.contextPath}/resources/home/img/img-sprite.png');">
+									style="background-image: url('${baseUrl}resources/home/img/img-sprite.png');">
 								</i></a></li>
 							<li><a href="#"><i class="twiter"> </i></a></li>
 							<li><a href="#"><i class="goog"> </i></a></li>
@@ -90,13 +87,13 @@
 					<div class="stay-left">
 						<form>
 							<input type="text"
-								placeholder="Enter your email to join our newsletter"
+								placeholder="Nhập email để nhân thông báo mới"
 								required="">
 						</form>
 					</div>
 					<div class="btn-1">
 						<form>
-							<input type="submit" value="join">
+							<input type="submit" value="Tham gia">
 						</form>
 					</div>
 					<div class="clearfix"></div>
@@ -106,6 +103,7 @@
 		</div>
 	</div>
 
+
 	<!-- Footer declare -->
 	<%@ include file="/WEB-INF/views/home/common/_footer.jsp"%>
 	<%@ include file="/WEB-INF/views/home/common/_footer-declare.jsp"%>
@@ -114,9 +112,10 @@
 		<div class="loading-spinner">Loading (custom)...</div>
 	</div>
 
+	<!-- common javascript -->
+	<%@ include file="/WEB-INF/views/_common-javascript.jsp"%>
+
 	<script>
-	
-		let baseUrl = 'http://localhost:8080/';
 		apiUrl = {
 			products: {
 				all: baseUrl + 'products',
@@ -141,6 +140,7 @@
 				 url: url,
 				 async: false,
 				 success: (res, status)=>{
+					 console.log(res);
 					 renderHtml(elemenId,res.data);
 				 },
 			});
@@ -151,11 +151,11 @@
 			html = '';
 			data.forEach(ele => {
 				html += '<li>';
-				html += '	<a href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">';
+				html += '	<a href="'+baseUrl+'chi-tiet-san-pham/'+ele.proId+'">';
 				html += '		<img src="'+ apiUrl.products.image +ele.proImages[0].proImageName+'" class="img-responsive" alt="loading...">';
 				html += '	</a>';
-				html += '	<div class="special-info grid_1 simpleCart_shelfItem">';
-				html += '		<h5><a class="product_link" href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'"></a>'+ele.proName+'</h5>';
+				html += '	<div center;" class="special-info grid_1 simpleCart_shelfItem">';
+				html += '		<h5><a class="product_link" href="'+baseUrl+'chi-tiet-san-pham/'+ele.proId+'">'+ele.proName+'</a></h5>';
 				if(!ele.proIsDiscount){
 					html += '		<div class="item_add">';
 					html += '			<span class="item_price">';
@@ -167,7 +167,7 @@
 				}else{
 					html += '		<div class="item_add">';
 					html += '			<span class="item_price">';
-					html += '				<p><del>'+(ele.proPrice/1000).toFixed(3)+ ' đ' +'</del></p>';
+					html += '				<p style="color:#212020"><del>'+(ele.proPrice/1000).toFixed(3)+ ' đ' +'</del></p>';
 					html += '				<h4>'+((ele.proPrice-ele.proPrice*ele.proDiscountRatio/100)/1000).toFixed(3)+ ' đ</h4>';
 					html += '			</span>';
 					html += 			ele.proAmount < 3 ? '<p style="color:green">Chỉ còn '+ele.proAmount+' sản phẩm</p>':'<p>&#160;</p>';

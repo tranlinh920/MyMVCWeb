@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<jsp:useBean id="SecurityUtil" class="com.my.utils.SecurityUtil" />
+
 <!-- header -->
 <div class="header_bg">
 	<div class="container">
 		<div class="header">
 			<div class="head-t">
 				<div class="logo">
-					<a href="http://localhost:8080/trang-chu"><img
-						src="${pageContext.request.contextPath}/resources/home/img/logo.png"
-						class="img-responsive" alt="" /> </a>
+					<a href="${baseUrl}trang-chu"><img
+						src="${baseUrl}resources/home/img/logo.png" class="img-responsive"
+						alt="" /> </a>
 				</div>
 				<!-- start header_right -->
 				<div class="header_right">
@@ -17,7 +21,24 @@
 						<div class="log">
 							<div class="login">
 								<div id="loginContainer">
-									<a href="#" id="loginButton"><span>Đăng nhập</span></a>
+
+									<sec:authorize access="!isAuthenticated()">
+										<a
+											href="https://www.facebook.com/dialog/oauth?client_id=1548757658620070&redirect_uri=${baseUrl}dang-nhap-bang-facebook"
+											id="loginButton"><span>Đăng nhập bằng Facebook</span></a>
+									</sec:authorize>
+									<sec:authorize access="isAuthenticated()">
+										<div class="dropdown">
+											<h5>
+												Chào:<strong> ${user.userFullName} <i
+													class="fa fa-sort-desc "></i></strong>
+											</h5>
+											<div class="dropdown-content">
+												<a href="http://localhost:8080/dang-xuat">Đăng xuất</a>
+											</div>
+										</div>
+									</sec:authorize>
+
 									<div id="loginBox">
 										<form id="loginForm">
 											<fieldset id="body">
@@ -39,16 +60,14 @@
 								</div>
 							</div>
 						</div>
-						<div class="reg">
-							<a href="register.html">Đăng ký</a>
-						</div>
+						<!-- 						<div class="reg"> -->
+						<!-- 							<a href="register.html">Đăng ký</a> -->
+						<!-- 						</div> -->
 						<div class="cart box_1">
-							<a href="http://localhost:8080/gio-hang">
+							<a href="${baseUrl}gio-hang">
 								<h3>
-									<img
-										src="${pageContext.request.contextPath}/resources/home/img/bag.png"
-										alt="">(<span id="simpleCart_quantity"
-										class="simpleCart_quantity">${cartSize}</span>)
+									<img src="${baseUrl}resources/home/img/bag.png" alt="">(<span
+										id="simpleCart_quantity" class="simpleCart_quantity">${cartSize}</span>)
 								</h3>
 							</a>
 							<div class="clearfix"></div>
@@ -56,7 +75,7 @@
 						<div class="clearfix"></div>
 					</div>
 					<div class="search">
-						<form action="http://localhost:8080/tim-kiem" method="get">
+						<form action="${baseUrl}tim-kiem" method="get">
 							<input type="text" name="p" value="" placeholder="Tìm kiếm...">
 							<input type="submit" value="">
 						</form>
@@ -96,7 +115,7 @@
 						<c:choose>
 							<c:when test="${navCat.catName=='Trang chủ'}">
 								<li class="active grid"><a class="color1"
-									href="http://localhost:8080/trang-chu">Trang chủ</a></li>
+									href="${baseUrl}trang-chu">Trang chủ</a></li>
 							</c:when>
 							<c:when test="${not empty navCat.catCategories}">
 								<li class="grid"><a href="#" class="color1">${navCat.catName}</a>

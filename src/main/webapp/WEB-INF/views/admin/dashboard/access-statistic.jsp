@@ -532,6 +532,9 @@
 	<script
 		src="${pageContext.request.contextPath}/resources/plugin/canvasjs/jquery.canvasjs.min.js"></script>
 
+	<!-- common javascript -->
+	<%@ include file="/WEB-INF/views/_common-javascript.jsp"%>
+
 	<script>
 	
 		const FIRST_PAGE = 1;
@@ -539,9 +542,7 @@
 		let totalPages;
 		let visiblePages;
 		let currentPage = 1;// default
-		let accessStatistics = [];
-	
-		let baseUrl = 'http://localhost:8080/';		
+		let accessStatistics = [];	
 		
 		apiUrl = {
 				accessStatistis: {

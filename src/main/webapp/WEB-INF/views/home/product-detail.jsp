@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 
 <!-- Header declare -->
 <%@ include file="/WEB-INF/views/home/common/_header-declare.jsp"%>
@@ -56,20 +55,20 @@
 						<c:if test="${not empty product}">
 							<ul id="etalage">
 								<li><a href="#"> <img class="etalage_thumb_image"
-										src="http://localhost:8080/resources/images/products/${product.proImages[0].proImageName}"
+										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" /> <img class="etalage_source_image"
-										src="http://localhost:8080/resources/images/products/${product.proImages[0].proImageName}"
+										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" title="" />
 								</a></li>
 								<li><img class="etalage_thumb_image"
-									src="http://localhost:8080/resources/images/products/${product.proImages[1].proImageName}"
+									src="${baseUrl}resources/images/products/${product.proImages[1].proImageName}"
 									class="img-responsive" /> <img class="etalage_source_image"
-									src="http://localhost:8080/resources/images/products/${product.proImages[1].proImageName}"
+									src="${baseUrl}resources/images/products/${product.proImages[1].proImageName}"
 									class="img-responsive" /></li>
 								<li><img class="etalage_thumb_image"
-									src="http://localhost:8080/resources/images/products/${product.proImages[2].proImageName}"
+									src="${baseUrl}resources/images/products/${product.proImages[2].proImageName}"
 									class="img-responsive" /> <img class="etalage_source_image"
-									src="http://localhost:8080/resources/images/products/${product.proImages[2].proImageName}"
+									src="${baseUrl}resources/images/products/${product.proImages[2].proImageName}"
 									class="img-responsive" /></li>
 							</ul>
 						</c:if>
@@ -79,13 +78,13 @@
 						<c:if test="${not empty product}">
 							<h3>${product.proName}</h3>
 							<span class="brand">Loại: <a
-								href="http://localhost:8080/san-pham/${product.proType.proTypeCode}">${product.proType.proTypeName }
+								href="${baseUrl}san-pham/${product.proType.proTypeCode}">${product.proType.proTypeName }
 							</a><input type="hidden" id="productTypeCode"
 								value="${product.proType.proTypeCode}"></span>
 							<c:if test="${not empty product.proBrand}">
 								<br>
 								<span class="brand">Thương hiệu: <a
-									href="http://localhost:8080/san-pham/${product.proBrand.proBrandName}">${product.proBrand.proBrandName }
+									href="${baseUrl}san-pham/${product.proBrand.proBrandName}">${product.proBrand.proBrandName }
 								</a></span>
 							</c:if>
 							<br>
@@ -143,7 +142,7 @@
 			<div class="col-md-6 s-c">
 				<li>
 					<div class="fooll">
-						<h5>follow us on</h5>
+						<h5>Theo dõi chúng tôi:</h5>
 					</div>
 				</li>
 				<li>
@@ -167,13 +166,13 @@
 					<div class="stay-left">
 						<form>
 							<input type="text"
-								placeholder="Enter your email to join our newsletter"
+								placeholder="Nhập email để nhân thông báo mới"
 								required="">
 						</form>
 					</div>
 					<div class="btn-1">
 						<form>
-							<input type="submit" value="join">
+							<input type="submit" value="Tham gia">
 						</form>
 					</div>
 					<div class="clearfix"></div>
@@ -189,8 +188,10 @@
 	<!-- Footer declare -->
 	<%@ include file="/WEB-INF/views/home/common/_footer-declare.jsp"%>
 
+	<!-- common javascript -->
+	<%@ include file="/WEB-INF/views/_common-javascript.jsp"%>
+
 	<script>
-		let baseUrl = 'http://localhost:8080/';
 		let proTypeCode = $('#productTypeCode').val();
 	
 		apiUrl = {
@@ -219,7 +220,7 @@
 				html += '				<img src="'+ apiUrl.products.image +ele.proImages[0].proImageName+'" class="img-responsive " alt="loading..." />';
 				html += '			</div>';
 				html += '			<div class="prod1-desc">';
-				html += '				<h5><a class="product_link" href="http://localhost:8080/chi-tiet-san-pham/'+ele.proId+'">'+ele.proName+'</a></h5>';
+				html += '				<h5><a class="product_link" href="'+baseUrl+'chi-tiet-san-pham/'+ele.proId+'">'+ele.proName+'</a></h5>';
 				html += '               <p>'+(ele.proPrice/1000).toFixed(3)+ ' đ' + '</p>';
 				html += '			</div>';
 				html += '			<div class="clearfix"></div>';
@@ -248,7 +249,7 @@
 		function buyNow(proId){
 			url = apiUrl.products.cart + proId; 
 			 $.post(url,{},(res, status) => {
-				 window.location.href = 'http://localhost:8080/gio-hang';
+				 window.location.href = baseUrl + 'gio-hang';
 			    }
 			 );
 		}

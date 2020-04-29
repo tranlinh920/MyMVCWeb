@@ -224,14 +224,14 @@
 							<label for="inputProductPrice" class="col-sm-2 col-form-label">Giá:</label>
 							<div class="col-sm-4">
 								<input type="text" class="form-control" id="inputProductPrice"
-									name="proPrice" placeholder="Giá...">
+									name="proPrice" placeholder="Giá..." required>
 							</div>
 							<!-- Số lượng -->
 							<label for="inputProductAmount" class="col-sm-2 col-form-label">Số
 								lượng:</label>
 							<div class="col-sm-4">
 								<input type="text" class="form-control" id="inputProductAmount"
-									placeholder="Số lượng..." name="proAmount">
+									placeholder="Số lượng..." name="proAmount" required>
 							</div>
 							<!-- Giảm giá -->
 							<label for="" class="col-sm-2 col-form-label">Giảm giá:</label>
@@ -294,8 +294,10 @@
 		</div>
 	</div>
 
+	<!-- common javascript -->
+	<%@ include file="/WEB-INF/views/_common-javascript.jsp"%>
+
 	<script>
-		let baseUrl = 'http://localhost:8080/';
 		let getUrl = baseUrl + 'products?';
 		let getOrderByDateUrl = baseUrl + 'products?sort_param=createdDate&sort_type=desc&';
 		let imagesUrl =  baseUrl + 'resources/images/';
@@ -355,7 +357,6 @@
 			let proTypeCode = $( '#productTypeFilter').val();	
 			if(proTypeCode === 'tat-ca'){
 				initProductsData();
-				$('#pagination-demo').twbsPagination('destroy');
 				setPaginationToGetData(getUrl);
 			}else{
 				let pagUrl = baseUrl + 'products/product-type/'+proTypeCode+'?limit=10&';
@@ -443,11 +444,18 @@
 		// tạo Ckeditor
 		function setCkeditor(){
 			CKEDITOR.replace( 'inputProductDescription', {
-				toolbar: [
-					[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink' ],
-					[ 'FontSize', 'TextColor' ]
-				]
+// 				toolbar: [
+// 					[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink' ],
+// 					[ 'FontSize', 'TextColor' ]
+// 				]
+				 allowedContent: true
 			});
+			CKEDITOR.editorConfig = function( config ) {
+// 			    config.toolbar_Full =  [
+// 			        ['Styles', 'Bold', 'Italic', 'Underline', 'SpellChecker', 'Scayt', '-', 'NumberedList', 'BulletedList'],
+// 			        ['Link', 'Unlink'], ['Undo', 'Redo', '-', 'SelectAll'], '/', ['timestamp', '-', 'linkbutton']
+// 			    ];
+			};
 		};
 		
 		// Mở modal hiển thị ảnh sản phẩm

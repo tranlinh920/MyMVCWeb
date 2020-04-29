@@ -14,15 +14,15 @@
 
 </script>
 <script
-	src="${pageContext.request.contextPath}/resources/home/js/bootstrap.min.js">
+	src="${baseUrl}/resources/home/js/bootstrap.min.js">
 	
 </script>
 <!-- <script -->
-<%-- 	src="${pageContext.request.contextPath}/resources/home/js/simpleCart.min.js"> --%>
+<%-- 	src="${baseUrl}/resources/home/js/simpleCart.min.js"> --%>
 	
 <!-- </script> -->
 <script
-	src="${pageContext.request.contextPath}/resources/plugin/loading-master/jquery.loading.min.js">
+	src="${baseUrl}/resources/plugin/loading-master/jquery.loading.min.js">
 	
 </script>
 

@@ -40,11 +40,14 @@ public class UserEntity extends BaseEntity {
 	@Column(name = "userEmail", nullable = true, columnDefinition = "varchar(128)")
 	private String userEmail;
 
-	@Column(name = "userPhoneNumber", nullable = false, columnDefinition = "bigint")
-	private Long userPhoneNumber;
+	@Column(name = "userPhoneNumber", nullable = false, columnDefinition = "varchar(15)")
+	private String userPhoneNumber;
 
 	@Column(name = "userAddress", nullable = false, columnDefinition = "text")
 	private String userAddress;
+
+	@Column(name = "userLink", nullable = false, columnDefinition = "nvarchar(256)")
+	private String userLink;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "userRoles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -52,7 +55,7 @@ public class UserEntity extends BaseEntity {
 
 	@Column(name = "userEnable", nullable = false)
 	private boolean userEnable;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "bilUser")
 	private List<BillEntity> userBills = new ArrayList<>();
 

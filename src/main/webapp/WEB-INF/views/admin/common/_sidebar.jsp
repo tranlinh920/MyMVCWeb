@@ -29,8 +29,11 @@
 		<div id="collapseDashboard" class="collapse"
 			aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="buttons.html">Thống kê người dùng</a>
-				<a class="collapse-item" href="cards.html">Thống kê sản phẩm</a>
+				<a class="collapse-item"
+					href="${pageContext.request.contextPath}/admin/thong-ke-luot-truy-cap">Thống
+					kê lượt truy cập</a> <a class="collapse-item"
+					href="${pageContext.request.contextPath}/admin/thong-ke-san-pham">Thống
+					kê sản phẩm</a>
 			</div>
 		</div></li>
 

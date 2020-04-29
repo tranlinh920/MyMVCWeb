@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.my.dto.UserDTO;
 
 public interface UserService {
+
 	public UserDetails loadUserByUsername(String userName);
 
 	public UserDTO findByIdAndGetRoles(Long userId);

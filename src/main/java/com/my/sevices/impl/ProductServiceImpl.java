@@ -240,7 +240,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDTO> findByProNameContaining(String proName, Pageable pageable) {
 		List<ProductDTO> dtos = new ArrayList<ProductDTO>();
-		List<ProductEntity> entities = productRepository.findByProNameContainingIgnoreCase(proName, pageable);
+		List<ProductEntity> entities = productRepository.findByProNameContainingIgnoreCaseAndIsActiveTrue(proName, pageable);
 		entities.forEach(entity -> {
 			dtos.add(productConverter.toDTO(entity));
 		});

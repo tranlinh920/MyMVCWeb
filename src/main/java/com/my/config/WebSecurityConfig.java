@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+//@PropertySource(value= {"classpath:application.properties"})
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -79,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.usernameParameter("username")//
 				.passwordParameter("password")
 				// Config for Logout Page
-				.and().logout().logoutUrl("/dang-xuat").logoutSuccessUrl("/admin/dang-nhap");
+				.and().logout().logoutUrl("/dang-xuat").logoutSuccessUrl("/trang-chu");
 
 		// Config Remember Me.
 //		http.authorizeRequests().and() //
@@ -101,4 +102,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //		InMemoryTokenRepositoryImpl memory = new InMemoryTokenRepositoryImpl();
 //		return memory;
 //	}
+
 }

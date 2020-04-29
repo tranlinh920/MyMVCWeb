@@ -99,10 +99,11 @@
 								</div>
 								<div class="col col-md-4">
 									<div class="input-group md-form form-sm form-2 pl-0">
-										<input class="form-control my-0 py-1 amber-border" type="text"
-											placeholder="Tìm kiếm..." aria-label="Search">
-										<button class="btn btn-light input-group-append"><i class="fas fa-search text-secondary"
-												aria-hidden="true"></i></span>
+										<input id="billSearchStr"
+											class="form-control my-0 py-1 amber-border" type="text"
+											placeholder="Nhập tên, số điện thoại..." aria-label="Search">
+										<button onclick="searchBillsInfo()" class="btn btn-light input-group-append">
+											<i class="fas fa-search text-secondary" aria-hidden="true"></i></span>
 										</button>
 									</div>
 								</div>
@@ -199,6 +200,9 @@
 		</div>
 	</div>
 
+	<!-- common javascript -->
+	<%@ include file="/WEB-INF/views/_common-javascript.jsp"%>
+
 	<script>
 		const FIRST_PAGE = 1;
 		let startPage ;
@@ -206,13 +210,13 @@
 		let visiblePages;
 		let currentPage = 1;// default
 		let bills = [];
-		
-		let baseUrl = 'http://localhost:8080/';	
+
 		apiUrl = {
 			bills: {
 				all: baseUrl + 'bills?sort_param=createdDate&sort_type=desc',
 				orderByBillAmount:  baseUrl + 'bills?sort_param=bilAmount',
 				orderByBillDate:  baseUrl + 'bills?sort_param=createdDate',
+				search: baseUrl + "bills/search?p=",
 				status: baseUrl + 'bills/status/'
 			},
 			billStatuses : {
@@ -359,6 +363,7 @@
 				html += '<a name="action" href="#" onclick="viewBill('+ele.bilId+')"><i class="ml-1 fa fa-eye text-success"></i></a>';
 				html += '<a name="action" href="#" onclick="initBillStatusData('+ele.bilId+','+ele.bilStatus.bsId+')"><i class="fa fa-pencil-square-o .text-primary ml-1"></i></a>';	
 				html += '<a name="action" style="color:red" href="#" onclick="openBillDelete('+ele.bilId+')"><i class="ml-1 fa fa-trash-o"></i></a>';
+				html +=  ele.bilUser != undefined ? '<a name="action" href="'+ele.bilUser.userLink+'"><i class="ml-1 fa fa-facebook"></i></a>': "";
 				html += '</span></td>';
 				html += '</tr>';
 			});
@@ -504,6 +509,23 @@
 			  document.execCommand('copy');
 			  document.body.removeChild(el);
 		}
+		
+		
+		// Tìm kiếm tên khách hàng, số điện thoại trong hóa đơn
+		function searchBillsInfo(){
+			let searchStr = $('#billSearchStr').val();
+			let pagUrl = apiUrl.bills.search + searchStr;
+			$.ajax({
+				url: pagUrl+"&page=" + FIRST_PAGE,
+				async: false,
+				success: (res)=>{
+				setPagingInfo(res);
+				renderHtml(res.data);
+				 $('#pagination-demo').twbsPagination('destroy');
+				 setPaginationToGetData(pagUrl,currentPage);
+			}});	
+		}
+			
 		
 		
 				

@@ -13,8 +13,9 @@ public class UserDTO extends BaseDTO {
 	private String userPassword;
 	private String userFullName;
 	private String userEmail;
-	private Long userPhoneNumber;
+	private String userPhoneNumber;
 	private String userAddress;
+	private String userLink;
 	private List<RoleDTO> userRoles;
 	private boolean userEnable;
 }
