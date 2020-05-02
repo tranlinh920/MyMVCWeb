@@ -55,20 +55,20 @@
 						<c:if test="${not empty product}">
 							<ul id="etalage">
 								<li><a href="#"> <img class="etalage_thumb_image"
-										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
+										src="${baseUrl}upload/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" /> <img class="etalage_source_image"
-										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
+										src="${baseUrl}upload/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" title="" />
 								</a></li>
 								<li><img class="etalage_thumb_image"
-									src="${baseUrl}resources/images/products/${product.proImages[1].proImageName}"
+									src="${baseUrl}upload/images/products/${product.proImages[1].proImageName}"
 									class="img-responsive" /> <img class="etalage_source_image"
-									src="${baseUrl}resources/images/products/${product.proImages[1].proImageName}"
+									src="${baseUrl}upload/images/products/${product.proImages[1].proImageName}"
 									class="img-responsive" /></li>
 								<li><img class="etalage_thumb_image"
-									src="${baseUrl}resources/images/products/${product.proImages[2].proImageName}"
+									src="${baseUrl}upload/images/products/${product.proImages[2].proImageName}"
 									class="img-responsive" /> <img class="etalage_source_image"
-									src="${baseUrl}resources/images/products/${product.proImages[2].proImageName}"
+									src="${baseUrl}upload/images/products/${product.proImages[2].proImageName}"
 									class="img-responsive" /></li>
 							</ul>
 						</c:if>
@@ -117,7 +117,7 @@
 				<c:if test="${not empty product}">
 					<div class="single-bottom1">
 						<h6>Mô tả</h6>
-						<p class="prod-desc">${product.proDescribe}</p>
+						<div class="prod-desc res-page">${product.proDescribe}</div>
 					</div>
 				</c:if>
 				<div class="single-bottom2">
@@ -197,7 +197,7 @@
 		apiUrl = {
 			products: {
 				all: baseUrl + 'products',
-				image: baseUrl + 'resources/images/products/',
+				image: baseUrl + 'upload/images/products/',
 				cart: baseUrl + 'products/add-to-cart/',
 				byProductType: baseUrl +  'products/product-type/' + proTypeCode,
 			}

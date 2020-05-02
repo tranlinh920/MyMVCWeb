@@ -18,12 +18,12 @@ public class MenuServiceImpl {
 
 		Category trangChu = new Category("Trang chủ", "");
 		Category danhMucSP = new Category("Danh mục sản phẩm", "");
-		Category dichVu = new Category("Dịch vụ", "");
-		Category lienHe = new Category("Liên hệ", "");
+		Category hdMuaHang = new Category("Hướng dẫn mua hàng", baseUrl + "trang/huong-dan-mua-hang");
+		Category ptGiaoHang = new Category("Phương thức giao hàng", baseUrl + "trang/phuong-thuc-giao-hang");
 		navs.add(trangChu);
 		navs.add(danhMucSP);
-		navs.add(dichVu);
-		navs.add(lienHe);
+		navs.add(hdMuaHang);
+		navs.add(ptGiaoHang);
 
 		// create category for danhMucSP
 		Category doChoi = new Category("Đồ chơi", "");
@@ -48,21 +48,25 @@ public class MenuServiceImpl {
 		List<Category> sideBars = new ArrayList<>();
 
 		Category loaiSP = new Category("Loại sản phẩm", "");
-		Category nhot = new Category("Nhớt", "");
+//		Category nhot = new Category("Nhớt", "");
 		sideBars.add(loaiSP);
-		sideBars.add(nhot);
-		
+//		sideBars.add(nhot);
+
+		// add item for "Loai san pham"
 		Category oc = new Category("Ốc", baseUrl + "san-pham/oc");
 		loaiSP.getCatCategories().add(oc);
-		
-		Category motul = new Category("Motul", baseUrl + "");
-		Category repsol = new Category("Repsol", baseUrl + "");
-		Category castrol = new Category("Castrol", baseUrl + "");
-		Category total = new Category("Total", baseUrl + "");
-		nhot.getCatCategories().add(motul);
-		nhot.getCatCategories().add(repsol);
-		nhot.getCatCategories().add(castrol);
-		nhot.getCatCategories().add(total);
+		Category denTroSang = new Category("Đèn trợ sáng", baseUrl + "san-pham/den-tro-sang");
+		loaiSP.getCatCategories().add(denTroSang);
+
+		// add item for "Nhot"
+//		Category motul = new Category("Motul", baseUrl + "");
+//		Category repsol = new Category("Repsol", baseUrl + "");
+//		Category castrol = new Category("Castrol", baseUrl + "");
+//		Category total = new Category("Total", baseUrl + "");
+//		nhot.getCatCategories().add(motul);
+//		nhot.getCatCategories().add(repsol);
+//		nhot.getCatCategories().add(castrol);
+//		nhot.getCatCategories().add(total);
 
 		return sideBars;
 	}
@@ -79,7 +83,7 @@ public class MenuServiceImpl {
 	public static void main(String[] args) {
 		System.out.println(Arrays.toString(new MenuServiceImpl().getNavigationBars().toArray()));
 	}
-	
+
 //	Danh Mục Sản Phẩm
 //	🏍️ Đồ chơi xe máy
 //	- kính chiếu hậu

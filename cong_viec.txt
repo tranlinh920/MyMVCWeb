@@ -19,3 +19,5 @@ Hiển thị trang chi tiết sản phẩm
 
 Hiển thị trang giỏ hàng bào gồm xóa sản phẩm ra khỏi giỏ và thanh toán
 
+Thay đổi thư mục upload ảnh
+Sửa lỗi ckeditor => xóa tabindex="-1" trong modal

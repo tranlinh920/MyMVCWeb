@@ -12,9 +12,9 @@
 <script
 	src="${pageContext.request.contextPath}/resources/admin/js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script
-	src="${pageContext.request.contextPath}/resources/admin/vendor/chart.js/Chart.min.js"></script>
+<!-- <!-- Page level plugins --> -->
+<!-- <script -->
+<%-- 	src="${pageContext.request.contextPath}/resources/admin/vendor/chart.js/Chart.min.js"></script> --%>
 
 <!-- Page level custom scripts -->
 <script

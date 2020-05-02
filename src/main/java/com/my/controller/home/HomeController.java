@@ -25,12 +25,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.my.converter.UserConverter;
+import com.my.dto.PageDTO;
 import com.my.dto.ProductDTO;
 import com.my.dto.ProductTypeDTO;
 import com.my.dto.UserDTO;
 import com.my.entities.ProductEntity;
 import com.my.exception.RecordNotFoundException;
 import com.my.paging.PagingComponent;
+import com.my.services.PageService;
 import com.my.services.ProductService;
 import com.my.services.ProductTypeService;
 import com.my.services.UserService;
@@ -61,9 +63,19 @@ public class HomeController {
 	@Autowired
 	private UserConverter userConverter;
 
+	@Autowired
+	private PageService pageService;
+
 	@GetMapping(value = { "/", "/trang-chu" })
 	public String getHomePage(Model model, HttpSession session) {
 		return "home/home";
+	}
+
+	@GetMapping("/trang/{pageCode}")
+	public String getPage(Model model, @PathVariable("pageCode") String pageCode) {
+		PageDTO dto = pageService.findByCode(pageCode);
+		model.addAttribute("pageModel", dto);
+		return "home/page";
 	}
 
 	@GetMapping("/san-pham/{proTypeCode}")

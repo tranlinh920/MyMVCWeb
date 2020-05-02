@@ -47,6 +47,8 @@ public class StorageServiceImpl {
 			uploadDir.mkdirs();
 		}
 
+//		System.out.println("-------------------" + uploadDir.getAbsolutePath());
+
 		for (MultipartFile file : files) {
 			String name = file.getOriginalFilename();
 			if (name != null && name.length() > 0) {

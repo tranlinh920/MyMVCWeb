@@ -174,7 +174,7 @@
 	<%@ include file="/WEB-INF/views/admin/common/_modal.jsp"%>
 
 	<!-- Add Modal -->
-	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+	<div class="modal fade" id="addModal" role="dialog"
 		aria-labelledby="addModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
@@ -300,7 +300,7 @@
 	<script>
 		let getUrl = baseUrl + 'products?';
 		let getOrderByDateUrl = baseUrl + 'products?sort_param=createdDate&sort_type=desc&';
-		let imagesUrl =  baseUrl + 'resources/images/';
+		let imagesUrl =  baseUrl + 'upload/images/';
 	
 		const FIRST_PAGE = 1;
 		let startPage ;

@@ -229,9 +229,10 @@
 		let date = $( '#date option:selected' ).val();
 		let month = $( '#month option:selected' ).val();
 		let year = $( '#year option:selected' ).val();
-
-		initBuyingStatisticsData();
+		
+		initBuyingStatisticsData();	
 		setPaginationToGetData(apiUrl.productBill.buyStatistics + '?day='+date+'&month='+month+'&year='+year);
+
 		//------------------------------------------------------
 		
 			// Khởi tạo dữ liệu thống kê

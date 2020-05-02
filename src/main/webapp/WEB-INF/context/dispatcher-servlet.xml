@@ -33,8 +33,15 @@
 		<property name="suffix" value=".jsp" />
 
 	</bean>
+
+	<!-- set static file location -->
 	<mvc:resources mapping="/resources/**"
 		location="/resources/" />
+
+	<!-- set upload file location. It put outside project location. The "file:/upload/" 
+		represent for ROOT location at present disk -->
+	<mvc:resources mapping="/upload/**"
+		location="file:/upload/" />
 
 	<!-- Configures Interceptors -->
 	<mvc:interceptors>

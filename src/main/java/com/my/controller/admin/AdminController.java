@@ -50,4 +50,10 @@ public class AdminController {
 		ModelAndView mav = new ModelAndView("admin/bill-managerment/bill");
 		return mav;
 	}
+
+	@GetMapping("/admin/quan-ly-trang")
+	public ModelAndView getPageMangagermentPage() {
+		ModelAndView mav = new ModelAndView("admin/content-managerment/page");
+		return mav;
+	}
 }

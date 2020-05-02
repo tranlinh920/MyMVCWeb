@@ -77,7 +77,12 @@ public class ProductController {
 
 	@PostMapping()
 	public ResponseEntity<?> newProduct(@ModelAttribute ProductUpload pro, HttpServletRequest request) {
-		String uploadPath = request.getServletContext().getRealPath("resources/images/products");
+		// String uploadPath =
+		// request.getServletContext().getRealPath("resources/images/products");
+
+		// set location at ROOT of present disk
+		String uploadPath = "/upload/images/products";
+//		System.out.println("uploadPath: " + uploadPath);
 		ProductDTO dto = productService.save(pro, uploadPath);
 		Result<ProductDTO> result = new Result<ProductDTO>(200, dto);
 		return new ResponseEntity<>(result, HttpStatus.OK);
@@ -86,7 +91,7 @@ public class ProductController {
 	@PostMapping("/{id}")
 	public ResponseEntity<?> replaceProduct(@PathVariable(name = "id") Long proId, @ModelAttribute ProductUpload pro,
 			HttpServletRequest request) {
-		String uploadPath = request.getServletContext().getRealPath("resources/images/products");
+		String uploadPath = "/upload/images/products";
 		pro.setProId(proId);
 		ProductDTO dto = productService.save(pro, uploadPath);
 		Result<ProductDTO> result = new Result<ProductDTO>(200, dto);

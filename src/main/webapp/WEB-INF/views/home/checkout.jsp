@@ -30,7 +30,7 @@
 							<div class="cart-sec simpleCart_shelfItem">
 								<div class="cart-item cyc">
 									<img
-										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
+										src="${baseUrl}upload/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" alt="" />
 								</div>
 								<div class="cart-item-info">
@@ -261,7 +261,7 @@
 		apiUrl = {
 			products: {
 				all: baseUrl + 'products?limit='+limit+'&',
-				image: baseUrl + 'resources/images/products/',
+				image: baseUrl + 'upload/images/products/',
 				cart: baseUrl + 'products/add-to-cart/',
 				delCart: baseUrl + 'products/del-from-cart',
 			},

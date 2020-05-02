@@ -44,7 +44,7 @@
 							<div class="border">
 								<div class="content_box">
 									<a href="${baseUrl}chi-tiet-san-pham/${product.proId}"> <img
-										src="${baseUrl}resources/images/products/${product.proImages[0].proImageName}"
+										src="${baseUrl}upload/images/products/${product.proImages[0].proImageName}"
 										class="img-responsive" alt="">
 									</a>
 								</div>
@@ -194,7 +194,7 @@
 		apiUrl = {
 			products: {
 				all: baseUrl + 'products?limit='+limit,
-				image: baseUrl + 'resources/images/products/',
+				image: baseUrl + 'upload/images/products/',
 				cart: baseUrl + 'products/add-to-cart/',
 				byProductType: baseUrl +  'products/product-type/' + proTypeCode,
 			}

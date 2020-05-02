@@ -119,7 +119,7 @@
 		apiUrl = {
 			products: {
 				all: baseUrl + 'products',
-				image: baseUrl + 'resources/images/products/',
+				image: baseUrl + 'upload/images/products/',
 				cart: baseUrl + 'products/add-to-cart/',
 				byProductType: baseUrl +  'products/product-type',
 			}
